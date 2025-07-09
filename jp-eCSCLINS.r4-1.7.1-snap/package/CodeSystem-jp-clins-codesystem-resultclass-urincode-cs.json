@@ -1,0 +1,142 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_CodeSystem_ResultClass_UrineCode_CS",
+  "id": "jp-clins-codesystem-resultclass-urincode-cs",
+  "title": "JP_CLINS 尿関係の定性検査結果コード表 1：－、2：±、3：＋、4：2＋、5：3＋、6：4＋、7：5＋",
+  "description": "JP_CLINS 尿関係の定性検査結果　1：－、2：±、3：＋、4：２＋、5：３＋、6：４＋、7：５＋ コードは半角、コード表示名は全角文字",
+  "url": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_Urine_Code_CS",
+  "concept": [
+    {
+      "code": "1",
+      "display": "－",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "-"
+        },
+        {
+          "language": "ja",
+          "value": "(-)"
+        }
+      ]
+    },
+    {
+      "code": "2",
+      "display": "±",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "+-"
+        },
+        {
+          "language": "ja",
+          "value": "(+-)"
+        },
+        {
+          "language": "ja",
+          "value": "(±)"
+        }
+      ]
+    },
+    {
+      "code": "3",
+      "display": "＋",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "+"
+        },
+        {
+          "language": "ja",
+          "value": "(+)"
+        }
+      ]
+    },
+    {
+      "code": "4",
+      "display": "２＋",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "2+"
+        },
+        {
+          "language": "ja",
+          "value": "++"
+        },
+        {
+          "language": "ja",
+          "value": "(++)"
+        }
+      ]
+    },
+    {
+      "code": "5",
+      "display": "３＋",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "3+"
+        },
+        {
+          "language": "ja",
+          "value": "+++"
+        },
+        {
+          "language": "ja",
+          "value": "(+++)"
+        }
+      ]
+    },
+    {
+      "code": "6",
+      "display": "４＋",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "4+"
+        },
+        {
+          "language": "ja",
+          "value": "++++"
+        },
+        {
+          "language": "ja",
+          "value": "(++++)"
+        }
+      ]
+    },
+    {
+      "code": "7",
+      "display": "５＋",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "5+"
+        },
+        {
+          "language": "ja",
+          "value": "+++++"
+        },
+        {
+          "language": "ja",
+          "value": "(+++++)"
+        }
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "caseSensitive": false,
+  "date": "2024-12-16T00:00:00+09:00",
+  "contact": [
+    {
+      "name": "Kazuhiko Ohe, The Univerisity of Tokyo"
+    }
+  ],
+  "count": 7
+}

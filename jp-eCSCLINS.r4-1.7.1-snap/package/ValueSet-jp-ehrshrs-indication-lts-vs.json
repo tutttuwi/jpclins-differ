@@ -1,0 +1,27 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_ehrshrs_indication_LTS_VS",
+  "id": "jp-ehrshrs-indication-lts-vs",
+  "title": "長期保存のためのフラグコード　valueSet",
+  "description": "長期保存のためのフラグコード　valueSet",
+  "url": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ehrshrs_lts_indication",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_ehrshrs_indication",
+        "concept": [
+          {
+            "code": "LTS",
+            "display": "長期保存"
+          }
+        ]
+      }
+    ]
+  }
+}

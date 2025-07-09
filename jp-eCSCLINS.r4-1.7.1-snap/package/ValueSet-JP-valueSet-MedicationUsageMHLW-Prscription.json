@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_valueSet_MedicationUsageMHLW_Prscription",
+  "id": "JP-valueSet-MedicationUsageMHLW-Prscription",
+  "title": "厚労省電子処方箋用法コードマスターValueSet",
+  "description": "厚労省電子処方箋用法コードマスターValueSet",
+  "url": "http://jpfhir.jp/fhir/core/mhlw/ValueSet/MedicationUsage_ePrescription",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-09-07",
+  "publisher": "厚生労働省",
+  "copyright": "　",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/core/mhlw/CodeSystem/MedicationUsage_ePrescription"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicalfeescoretype-namingsystem",
+  "name": "JP_MedicalFeeScoreType_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicalFeeScoreType NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.100495.20.3.22"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.100495.20.3.22",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicalFeeScoreType_CS"
+    }
+  ]
+}

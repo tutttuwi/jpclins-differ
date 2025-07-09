@@ -1,0 +1,28 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicationcodehot13-namingsystem",
+  "name": "JP_MedicationCodeHOT13_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicationCode HOT13 NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200119.4.402.1"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200119.4.402.1",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicationCodeHOT13_CS"
+    },
+    {
+      "type": "uri",
+      "value": "http://medis.or.jp/CodeSystem/master-HOT13"
+    }
+  ]
+}

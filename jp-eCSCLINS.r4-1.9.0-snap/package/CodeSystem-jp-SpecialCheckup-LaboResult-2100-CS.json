@@ -1,0 +1,26 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_SpecialCheckup_LaboResult_2100_CS",
+  "id": "jp-SpecialCheckup-LaboResult-2100-CS",
+  "title": "特定検診検査結果　定性検査結果2100",
+  "description": "特定検診検査結果　定性検査結果　1：陽性，2：陰性",
+  "url": "urn:oid:1.2.392.200119.6.2100",
+  "concept": [
+    {
+      "code": "1",
+      "display": "陽性"
+    },
+    {
+      "code": "2",
+      "display": "陰性"
+    }
+  ],
+  "version": "4.0.0",
+  "caseSensitive": false,
+  "experimental": false,
+  "publisher": "厚生労働省",
+  "copyright": "厚生労働省",
+  "count": 2
+}

@@ -1,0 +1,64 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_CodeSystem_ResultClass_BldABO_CS",
+  "id": "jp-clins-codesystem-resultclass-bldABO-cs",
+  "title": "JP_CLINS ABO血液型の検査結果コード表 1：A、2：B、3：AB、4：O",
+  "description": "JP_CLINS ABO血液型の検査結果コード表　1：A、2：B、3：AB、4：O コードは半角、コード表示名は全角文字または半角文字",
+  "url": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_BldABO_CS",
+  "concept": [
+    {
+      "code": "1",
+      "display": "Ａ",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "A"
+        }
+      ]
+    },
+    {
+      "code": "2",
+      "display": "Ｂ",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "B"
+        }
+      ]
+    },
+    {
+      "code": "3",
+      "display": "ＡＢ",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "AB"
+        }
+      ]
+    },
+    {
+      "code": "4",
+      "display": "Ｏ",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "O"
+        }
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "caseSensitive": false,
+  "date": "2024-12-16T00:00:00+09:00",
+  "contact": [
+    {
+      "name": "Kazuhiko Ohe, The Univerisity of Tokyo"
+    }
+  ],
+  "count": 4
+}

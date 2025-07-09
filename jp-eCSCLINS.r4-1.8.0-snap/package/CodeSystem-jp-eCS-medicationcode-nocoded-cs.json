@@ -1,0 +1,20 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_eCS_MedicationCode_Nocoded_CS",
+  "id": "jp-eCS-medicationcode-nocoded-cs",
+  "title": "医薬品未標準化コード項目",
+  "description": "医薬品コードで標準コードが割り当てられない場合に使用する未コード化コード",
+  "url": "http://jpfhir.jp/fhir/eCS/CodeSystem/MedicationCodeNocoded_CS",
+  "concept": [
+    {
+      "code": "NOCODED",
+      "display": "標準コードなし"
+    }
+  ],
+  "version": "1.4.0",
+  "experimental": false,
+  "caseSensitive": false,
+  "count": 1
+}

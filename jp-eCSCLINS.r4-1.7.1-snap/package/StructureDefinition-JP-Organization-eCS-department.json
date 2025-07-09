@@ -1,0 +1,4201 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "JP-Organization-eCS-department",
+  "language": "ja",
+  "url": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS_department",
+  "version": "1.7.1",
+  "name": "JP_Organization_eCS_department",
+  "status": "active",
+  "date": "2024-09-14",
+  "publisher": "（一社）日本医療情報学会",
+  "description": "eCS 診療情報・サマリー汎用 　Organizationリソース（診療科情報）プロファイル　（JP_Organizationの派生プロファイル）",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "fhirVersion": "4.0.1",
+  "mapping": [
+    {
+      "identity": "v2",
+      "uri": "http://hl7.org/v2",
+      "name": "HL7 v2 Mapping"
+    },
+    {
+      "identity": "rim",
+      "uri": "http://hl7.org/v3",
+      "name": "RIM Mapping"
+    },
+    {
+      "identity": "servd",
+      "uri": "http://www.omg.org/spec/ServD/1.0/",
+      "name": "ServD"
+    },
+    {
+      "identity": "w5",
+      "uri": "http://hl7.org/fhir/fivews",
+      "name": "FiveWs Pattern Mapping"
+    }
+  ],
+  "kind": "resource",
+  "abstract": false,
+  "type": "Organization",
+  "baseDefinition": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Organization",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Organization",
+        "path": "Organization",
+        "short": "eCS 診療情報・サマリー汎用 診療科情報の格納に使用する",
+        "definition": "eCS 診療情報・サマリー汎用 診療科情報の格納に使用する",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization",
+          "min": 0,
+          "max": "*"
+        },
+        "constraint": [
+          {
+            "key": "dom-2",
+            "severity": "error",
+            "human": "もしリソースが他のリソースに含まれている場合、そのリソースにはネストされたリソースを含めてはなりません (moshi risōsu ga hoka no risōsu ni fukumarete iru baai, sono risōsu ni wa nesuto sareta risōsu o fukumete wa narimasen).",
+            "expression": "contained.contained.empty()",
+            "xpath": "not(parent::f:contained and f:contained)",
+            "source": "http://hl7.org/fhir/StructureDefinition/DomainResource"
+          },
+          {
+            "key": "dom-3",
+            "severity": "error",
+            "human": "もしリソースが他のリソースに含まれている場合、それはリソースの他の場所から参照されるか、含まれるリソースに参照されるべきです。",
+            "expression": "contained.where((('#'+id in (%resource.descendants().reference | %resource.descendants().as(canonical) | %resource.descendants().as(uri) | %resource.descendants().as(url))) or descendants().where(reference = '#').exists() or descendants().where(as(canonical) = '#').exists() or descendants().where(as(canonical) = '#').exists()).not()).trace('unmatched', id).empty()",
+            "xpath": "not(exists(for $id in f:contained/*/f:id/@value return $contained[not(parent::*/descendant::f:reference/@value=concat('#', $contained/*/id/@value) or descendant::f:reference[@value='#'])]))",
+            "source": "http://hl7.org/fhir/StructureDefinition/DomainResource"
+          },
+          {
+            "key": "dom-4",
+            "severity": "error",
+            "human": "もしリソースが別のリソースの中に含まれる場合、meta.versionIdまたはmeta.lastUpdatedを持つべきではありません。",
+            "expression": "contained.meta.versionId.empty() and contained.meta.lastUpdated.empty()",
+            "xpath": "not(exists(f:contained/*/f:meta/f:versionId)) and not(exists(f:contained/*/f:meta/f:lastUpdated))",
+            "source": "http://hl7.org/fhir/StructureDefinition/DomainResource"
+          },
+          {
+            "key": "dom-5",
+            "severity": "error",
+            "human": "「もしリソースが他のリソースに含まれている場合、セキュリティラベルを持つべきではありません。」",
+            "expression": "contained.meta.security.empty()",
+            "xpath": "not(exists(f:contained/*/f:meta/f:security))",
+            "source": "http://hl7.org/fhir/StructureDefinition/DomainResource"
+          },
+          {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice",
+                "valueBoolean": true
+              },
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bestpractice-explanation",
+                "valueMarkdown": "When a resource has no narrative, only systems that fully understand the data can display the resource to a human safely. Including a human readable representation in the resource makes for a much more robust eco-system and cheaper handling of resources by intermediary systems. Some ecosystems restrict distribution of resources to only those systems that do fully understand the resources, and as a consequence implementers may believe that the narrative is superfluous. However experience shows that such eco-systems often open up to new participants over time."
+              }
+            ],
+            "key": "dom-6",
+            "severity": "warning",
+            "human": "「資源は堅牢な管理のために物語を持つべきである。」",
+            "expression": "text.`div`.exists()",
+            "xpath": "exists(f:text/h:div)",
+            "source": "http://hl7.org/fhir/StructureDefinition/DomainResource"
+          },
+          {
+            "key": "org-1",
+            "severity": "error",
+            "human": "「組織は少なくとも名前または識別子を持つ必要があり、おそらく1つ以上のものもあるかもしれません」",
+            "expression": "(identifier.count() + name.count()) > 0",
+            "xpath": "count(f:identifier | f:name) > 0"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "Entity. Role, or Act"
+          },
+          {
+            "identity": "v2",
+            "map": "(also see master files messages)"
+          },
+          {
+            "identity": "rim",
+            "map": "Organization(classCode=ORG, determinerCode=INST)"
+          },
+          {
+            "identity": "servd",
+            "map": "Organization"
+          }
+        ]
+      },
+      {
+        "id": "Organization.id",
+        "path": "Organization.id",
+        "short": "このアーティファクトの論理ID",
+        "definition": "「リソースのURLで使用される論理ID。一度割り当てられたら、この値は変更されません。」",
+        "comment": "「リソースにIDがないのは、作成操作を使用してサーバーに送信されているときだけです。」",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true
+      },
+      {
+        "id": "Organization.meta",
+        "path": "Organization.meta",
+        "short": "「リソースに関するメタデータ」",
+        "definition": "リソースに関するメタデータ。これはインフラストラクチャによって維持されるコンテンツです。 コンテンツの変更は、リソースのバージョン変更と常に関連しているわけではありません。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.meta",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Meta"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true
+      },
+      {
+        "id": "Organization.implicitRules",
+        "path": "Organization.implicitRules",
+        "short": "このコンテンツが作成されたルールセット",
+        "definition": "「リソース構築時に遵守された一連のルールを指すものであり、コンテンツを処理する際に理解する必要があります。しばしば、特別なルールを定義する実装ガイドとその他のプロファイルなどを含むものです。」",
+        "comment": "このルールセットを主張することで、取引先の限られた集団にしか内容を理解させることができず、長期的にはデータの有用性が制限されます。しかしながら、現存するヘルスエコシステムは高度に分断化しており、一般的に計算可能な形式でデータを定義、収集、交換する準備が整っていません。できる限り、実装者および/または仕様ライターはこの要素の使用を避けるべきです。使用する場合、URLは、そのナラティブとともに他のプロファイル、値セットなどを含む実装ガイドを定義する参照となります。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.implicitRules",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "This element is labeled as a modifier because the implicit rules may provide additional knowledge about the resource that modifies it's meaning or interpretation",
+        "isSummary": true
+      },
+      {
+        "id": "Organization.language",
+        "path": "Organization.language",
+        "short": "「リソースコンテンツの言語」(Risōsukontentsu no gengo)",
+        "definition": "「リソースが書かれている基本言語。」",
+        "comment": "言語はインデックスとアクセシビリティをサポートするために提供されます（通常、テキスト読み上げなどのサービスは言語タグを使用します）。物語のHTML言語タグは、物語に適用されます。リソース上の言語タグは、リソース内のデータから生成される他のプレゼンテーションの言語を指定するために使用できます。すべてのコンテンツが基本言語である必要はありません。Resource.languageは自動的に物語に適用されたと想定してはいけません。言語が指定されている場合、HTMLのdiv要素にも指定する必要があります（xml：langとhtml lang属性の関係に関する情報はHTML5の規則を参照）。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Resource.language",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-maxValueSet",
+              "valueCanonical": "http://hl7.org/fhir/ValueSet/all-languages"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "Language"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
+              "valueBoolean": true
+            }
+          ],
+          "strength": "preferred",
+          "description": "「人間の言語。」(Ningen no gengo.)",
+          "valueSet": "http://hl7.org/fhir/ValueSet/languages"
+        }
+      },
+      {
+        "id": "Organization.text",
+        "path": "Organization.text",
+        "short": "本リソースをテキストで表現したものを入れてもよい。",
+        "definition": "「リソースの要約を含む人が読めるナビゲーションであり、リソースの内容を人に表現するために使用できます。ナビゲーションはすべての構造化されたデータをエンコードする必要はありませんが、人間がナビゲーションを読むだけで「臨床的に安全」であるために十分な詳細を含む必要があります。リソース定義には、臨床的な安全性を確保するためにナビゲーションで表現する必要があるコンテンツが定義される場合があります。」",
+        "comment": "含まれるリソースには説明がありません。含まれないリソースには説明が必要です。場合によっては、リソースが少量のデータしか含まず、テキストだけで表現されることがあります（minOccurs = 1要素がすべて満たされている限り）。これは、情報が「テキストの塊」としてキャプチャされるレガシーシステムからのデータや、テキストが生またはナレーションされて符号化された情報が後で追加される場合に必要な場合があります。",
+        "alias": [
+          "narrative",
+          "html",
+          "xhtml",
+          "display"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "DomainResource.text",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Narrative"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "Act.text?"
+          }
+        ]
+      },
+      {
+        "id": "Organization.text.id",
+        "path": "Organization.text.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.text.extension",
+        "path": "Organization.text.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.text.status",
+        "path": "Organization.text.status",
+        "short": "生成|拡張機能|追加|空の / generated | extensions | additional | empty",
+        "definition": "固定値。テキスト内容の全てがリソースのコンテンツから生成されたことを示す。",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Narrative.status",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "NarrativeStatus"
+            }
+          ],
+          "strength": "required",
+          "description": "リソースの叙述(Narative)のステータス。 / The status of a resource narrative.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/narrative-status|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.text.div",
+        "path": "Organization.text.div",
+        "short": "限られたXHTMLコンテンツ / Limited xhtml content",
+        "definition": "本リソースの構造化情報から生成したテキスト表現をいれてもよい。\\\\r\\\\nXHTML形式。",
+        "comment": "HTML要素の内容は、HTML 4.0標準の7〜11章と15章で説明されている基本的なHTMLフォーマット要素のみを含むXHTMLフラグメントです。XHTMLコンテンツには、ヘッド、ボディ、外部スタイルシート参照、スクリプト、フォーム、ベース/リンク/Xlink、フレーム、IFRAME、オブジェクトが含まれていません。 / The contents of the html element are an XHTML fragment containing only the basic html formatting elements described in chapters 7-11 and 15 of the HTML 4.0 standard, <a> elements (either name or href), images and internally contained stylesheets. The XHTML content SHALL NOT contain a head, a body, external stylesheet references, scripts, forms, base/link/xlink, frames, iframes and objects.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Narrative.div",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "xhtml"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "txt-1",
+            "severity": "error",
+            "human": "叙述(Narative)には、HTML 4.0標準<a>要素（名前またはHREFのいずれか）、画像、および内部に含まれるスタイルの第7〜11章（第9章のセクション4を除く）および15で説明した基本的なHTMLフォーマット要素と属性のみが含まれます。",
+            "expression": "htmlChecks()",
+            "xpath": "not(descendant-or-self::*[not(local-name(.)=('a', 'abbr', 'acronym', 'b', 'big', 'blockquote', 'br', 'caption', 'cite', 'code', 'col', 'colgroup', 'dd', 'dfn', 'div', 'dl', 'dt', 'em', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr', 'i', 'img', 'li', 'ol', 'p', 'pre', 'q', 'samp', 'small', 'span', 'strong', 'sub', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'tr', 'tt', 'ul', 'var'))]) and not(descendant-or-self::*/@*[not(name(.)=('abbr', 'accesskey', 'align', 'alt', 'axis', 'bgcolor', 'border', 'cellhalign', 'cellpadding', 'cellspacing', 'cellvalign', 'char', 'charoff', 'charset', 'cite', 'class', 'colspan', 'compact', 'coords', 'dir', 'frame', 'headers', 'height', 'href', 'hreflang', 'hspace', 'id', 'lang', 'longdesc', 'name', 'nowrap', 'rel', 'rev', 'rowspan', 'rules', 'scope', 'shape', 'span', 'src', 'start', 'style', 'summary', 'tabindex', 'title', 'type', 'valign', 'value', 'vspace', 'width'))])"
+          },
+          {
+            "key": "txt-2",
+            "severity": "error",
+            "human": "叙述(Narative)には、いくつかの空白でないコンテンツがあります / The narrative SHALL have some non-whitespace content",
+            "expression": "htmlChecks()",
+            "xpath": "descendant::text()[normalize-space(.)!=''] or descendant::h:img[@src]"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contained",
+        "path": "Organization.contained",
+        "short": "「含まれている、インラインのリソース」(Fukuma rete iru, inrain no risōsu)",
+        "definition": "「これらのリソースは、それらを含むリソースから独立した存在を持ちません。それらは独立して識別することはできず、独自の独立したトランザクション範囲を持つこともできません。」",
+        "comment": "「コンテンツが適切に識別できる場合には、これを行うべきではありません。識別が失われると、再び復元することは非常に困難であり（文脈に依存します）、メタ要素にプロファイルとタグを持つことができますが、セキュリティのラベルを持っていてはいけません。」",
+        "alias": [
+          "inline resources",
+          "anonymous resources",
+          "contained resources"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.contained",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Resource"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.extension",
+        "path": "Organization.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "rules": "open"
+        },
+        "short": "実装によって定義される追加コンテンツ",
+        "definition": "「リソースの基本的な定義の一部ではない追加情報を表すために使用することができます。拡張機能の使用を安全かつ管理可能にするために、定義と使用の一定のガバナンスが適用されます。実装者はどんな拡張機能でも定義できますが、拡張機能の定義の一部として満たす必要がある要件があります」",
+        "comment": "どのようなアプリケーション、プロジェクト、または標準が拡張機能を使用しているかに関わらず、拡張機能の使用には決して汚名が付くわけではありません - それらを使用または定義する機関または管轄区域に関係なく。拡張機能の使用こそが、FHIR仕様を誰にとっても簡単なコアレベルで維持することを可能にします。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.extension:prefectureNo",
+        "path": "Organization.extension",
+        "sliceName": "prefectureNo",
+        "short": "都道府県番号２桁を表現するExtension",
+        "definition": "「リソースの基本的な定義の一部ではない追加情報を表すために使用することができます。拡張機能の使用を安全かつ管理可能にするために、定義と使用の一定のガバナンスが適用されます。実装者はどんな拡張機能でも定義できますが、拡張機能の定義の一部として満たす必要がある要件があります」",
+        "comment": "都道府県番号２桁。Identifier型の拡張を使用する。  \nvalueには都道府県番号2桁の値を格納し、systemには都道府県番号を表すOID「.100495.20.3.21」を指定する。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "DomainResource.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Organization_PrefectureNo"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.extension:organizationCategory",
+        "path": "Organization.extension",
+        "sliceName": "organizationCategory",
+        "short": "点数表コード１桁（医科１、非保険検診施設２、歯科３、調剤４、訪問看護ステーション６）を表現するExtension【詳細参照】",
+        "definition": "「リソースの基本的な定義の一部ではない追加情報を表すために使用することができます。拡張機能の使用を安全かつ管理可能にするために、定義と使用の一定のガバナンスが適用されます。実装者はどんな拡張機能でも定義できますが、拡張機能の定義の一部として満たす必要がある要件があります」",
+        "comment": "点数表コード１桁（医科１、非保険検診施設２、歯科３、調剤４、訪問看護ステーション６）。systemには点数表番号を表すOID「.100495.20.3.22」を指定する。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "DomainResource.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Organization_InsuranceOrganizationCategory"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.extension:organizationNo",
+        "path": "Organization.extension",
+        "sliceName": "organizationNo",
+        "short": "医療機関コード（７桁）を表現するExtension【詳細参照】",
+        "definition": "「リソースの基本的な定義の一部ではない追加情報を表すために使用することができます。拡張機能の使用を安全かつ管理可能にするために、定義と使用の一定のガバナンスが適用されます。実装者はどんな拡張機能でも定義できますが、拡張機能の定義の一部として満たす必要がある要件があります」",
+        "comment": "医療機関コード（７桁）。Identifier型の拡張「InsuranceOrganizationNo」を使用する。  \nsystemには医療機関コードを表すOID「http://jpfhir.jp/fhir/core/mhlw/IdSystem/MedicalOrganizationID」を指定する。  \nvalueには下記の値を格納する。  \n　- 保険医療機関・保険薬局 : `医療機関コード（７桁）`  \n　- 非保険の特定健診・特定保健指導機関 : `機関コード（７桁）`  \n　  \n医療機関コードの詳しい説明は、Organizationプロファイルの医療機関コード１０桁の説明を参照すること。  \nなお上記に該当しない施設は、本拡張は使用しない。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "DomainResource.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension",
+            "profile": [
+              "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Organization_InsuranceOrganizationNo"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.modifierExtension",
+        "path": "Organization.modifierExtension",
+        "short": "無視できない拡張機能 (Mushi dekinai kakuchou kinou)",
+        "definition": "「リソースの基本的な定義に含まれない、要素の理解や、それを含む要素の子孫の理解を修正する追加情報を表すためにも使用されることがあります。通常、修飾要素は否定や修飾を提供します。拡張機能の使用を安全で管理しやすくするために、拡張機能の定義と使用に対して厳格な統治が適用されます。実装者は拡張機能を定義することが許可されていますが、拡張機能の定義の一部として満たす必要がある要件があります。リソースを処理するアプリケーションは、修飾子拡張をチェックする必要があります。修飾子拡張は、リソースまたはドメインリソースの任意の要素の意味を変更してはなりません（修飾子拡張自体の意味も変更できません）。」",
+        "comment": "どのようなアプリケーション、プロジェクト、または標準が拡張機能を使用しているかに関わらず、拡張機能の使用には決して汚名が付くわけではありません - それらを使用または定義する機関または管轄区域に関係なく。拡張機能の使用こそが、FHIR仕様を誰にとっても簡単なコアレベルで維持することを可能にします。",
+        "requirements": "Modifier extensions allow for extensions that *cannot* be safely ignored to be clearly distinguished from the vast majority of extensions which can be safely ignored.  This promotes interoperability by eliminating the need for implementers to prohibit the presence of extensions. For further information, see the [definition of modifier extensions](extensibility.html#modifierExtension).",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "DomainResource.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "Modifier extensions are expected to modify the meaning or interpretation of the resource that contains them",
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier",
+        "path": "Organization.identifier",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "system"
+            }
+          ],
+          "rules": "open"
+        },
+        "short": "複数のシステムでこの組織を識別【詳細参照】",
+        "definition": "複数の異種システムにまたがって組織を識別するための識別子",
+        "comment": "福祉医療関連施設と保険者組織はSlicingについてはJP Coreにて定義を行なっているため、定義に従いデータを格納すること。それ以外の組織については、利用する際には必要に応じて識別子を定義を行なうこと。",
+        "requirements": "組織は様々な ID で知られている。いくつかの機関では複数のIDを保持しており、ほとんどの機関では、組織に関する他の組織との交換のためにIDを収集している。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.identifier",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "condition": [
+          "org-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "w5",
+            "map": "FiveWs.identifier"
+          },
+          {
+            "identity": "v2",
+            "map": "XON.10 / XON.3"
+          },
+          {
+            "identity": "rim",
+            "map": ".scopes[Role](classCode=IDENT)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Identifiers"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.id",
+        "path": "Organization.identifier.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.extension",
+        "path": "Organization.identifier.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.use",
+        "path": "Organization.identifier.use",
+        "short": "通常|公式|温度|セカンダリ|古い（知られている場合） / usual | official | temp | secondary | old (If known)",
+        "definition": "この識別子の目的。 / The purpose of this identifier.",
+        "comment": "アプリケーションは、識別子が一時的なものであると明示的に言っていない限り、永続的であると想定できます。 / Applications can assume that an identifier is permanent unless it explicitly says that it is temporary.",
+        "requirements": "特定の使用のコンテキストが一連の識別子の中から選択される適切な識別子を許可します。 / Allows the appropriate identifier for a particular context of use to be selected from among a set of identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "これは、アプリケーションが一時的なIDを永続的なIDと間違えてはならないため、「IS修飾子」とラベル付けされています。 / This is labeled as \"Is Modifier\" because applications should not mistake a temporary id for a permanent one.",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierUse"
+            }
+          ],
+          "strength": "required",
+          "description": "既知の場合、この識別子の目的を識別します。 / Identifies the purpose for this identifier, if known .",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.type",
+        "path": "Organization.identifier.type",
+        "short": "識別子の説明 / Description of identifier",
+        "definition": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.",
+        "comment": "この要素は、識別子の一般的なカテゴリのみを扱います。識別子。システムに対応するコードに使用しないでください。一部の識別子は、一般的な使用法により複数のカテゴリに分類される場合があります。システムがわかっている場合、タイプは常にシステム定義の一部であるため、タイプは不要です。ただし、システムが不明な識別子を処理する必要があることがよくあります。多くの異なるシステムが同じタイプを持っているため、タイプとシステムの間に1：1の関係はありません。 / This element deals only with general categories of identifiers.  It SHOULD not be used for codes that correspond 1..1 with the Identifier.system. Some identifiers may fall into multiple categories due to common usage.   Where the system is known, a type is unnecessary because the type is always part of the system definition. However systems often need to handle identifiers where the system is not known. There is not a 1:1 relationship between type and system, since many different systems have the same type.",
+        "requirements": "識別子システムが不明な場合、ユーザーは識別子を使用できます。 / Allows users to make use of identifiers when the identifier system is not known.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierType"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
+              "valueBoolean": true
+            }
+          ],
+          "strength": "extensible",
+          "description": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-type"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.5"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.system",
+        "path": "Organization.identifier.system",
+        "short": "識別子値の名前空間 / The namespace for the identifier value",
+        "definition": "値の名前空間、つまり一意のセット値を記述するURLを確立します。 / Establishes the namespace for the value - that is, a URL that describes a set values that are unique.",
+        "comment": "識別子。システムは常にケースに敏感です。 / Identifier.system is always case sensitive.",
+        "requirements": "識別子のセットがたくさんあります。2つの識別子を一致させるには、どのセットを扱っているかを知る必要があります。システムは、特定の一意の識別子セットを識別します。 / There are many sets  of identifiers.  To perform matching of two identifiers, we need to know what set we're dealing with. The system identifies a particular set of unique identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.system",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / EI-2-4"
+          },
+          {
+            "identity": "rim",
+            "map": "II.root or Role.id.root"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierType"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.value",
+        "path": "Organization.identifier.value",
+        "short": "一意の値 / The value that is unique",
+        "definition": "通常、識別子の部分はユーザーに関連し、システムのコンテキスト内で一意のユーザーに関連しています。 / The portion of the identifier typically relevant to the user and which is unique within the context of the system.",
+        "comment": "値が完全なURIの場合、システムはurn：ietf：rfc：3986でなければなりません。値の主な目的は、計算マッピングです。その結果、比較目的で正規化される可能性があります（例えば、有意でない白文字、ダッシュなどの削除）ヒューマンディスプレイ用の値は、[レンダリングされた値拡張]（拡張レンダリングValue.html）を使用して伝達できます。識別子。価値は、識別子の知識を使用しない限り、ケースに敏感なものとして扱われます。システムにより、プロセッサーは、非セイズに固有の処理が安全であると確信できます。 / If the value is a full URI, then the system SHALL be urn:ietf:rfc:3986.  The value's primary purpose is computational mapping.  As a result, it may be normalized for comparison purposes (e.g. removing non-significant whitespace, dashes, etc.)  A value formatted for human display can be conveyed using the [Rendered Value extension](extension-rendered-value.html). Identifier.value is to be treated as case sensitive unless knowledge of the Identifier.system allows the processer to be confident that non-case-sensitive processing is safe.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.value",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.1 / EI.1"
+          },
+          {
+            "identity": "rim",
+            "map": "II.extension or II.root if system indicates OID or GUID (Or Role.id.extension or root)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Value"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.period",
+        "path": "Organization.identifier.period",
+        "short": "IDが使用に有効だった時間期間 / Time period when id is/was valid for use",
+        "definition": "識別子が使用される/有効な期間。 / Time period during which identifier is/was valid for use.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.7 + CX.8"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.effectiveTime or implied by context"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier.assigner",
+        "path": "Organization.identifier.assigner",
+        "short": "IDを発行した組織（単なるテキストである可能性があります） / Organization that issued id (may be just text)",
+        "definition": "識別子を発行/管理する組織。 / Organization that issued/manages the identifier.",
+        "comment": "識別子は、.reference要素を省略し、割り当て組織に関する名前またはその他のテキスト情報を反映した.display要素のみを含む場合があります。 / The Identifier.assigner may omit the .reference element and only contain a .display element reflecting the name or other textual information about the assigning organization.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.assigner",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Organization"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / (CX.4,CX.9,CX.10)"
+          },
+          {
+            "identity": "rim",
+            "map": "II.assigningAuthorityName but note that this is an improper use by the definition of the field.  Also Role.scoper"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierIssuingAuthority"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode",
+        "path": "Organization.identifier",
+        "sliceName": "medicalInstitutionCode",
+        "short": "施設が福祉医療関連機関である場合に利用する識別子【詳細参照】",
+        "definition": "福祉医療施設を区別するため医療機関コード（１０桁）を格納するためのIdentifier/Slicing定義。",
+        "comment": "systemはFixed Valueの```http://jpfhir.jp/fhir/core/IdSystem/insurance-medical-institution-no```を使用する。  \nvalue : ```医療機関コード（１０桁）```を使用する。  \n医療機関コード（１０桁）の詳細はOrganizationプロファイルの医療機関コード１０桁の説明を参照すること。 ",
+        "requirements": "組織は様々な ID で知られている。いくつかの機関では複数のIDを保持しており、ほとんどの機関では、組織に関する他の組織との交換のためにIDを収集している。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.identifier",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "condition": [
+          "org-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "w5",
+            "map": "FiveWs.identifier"
+          },
+          {
+            "identity": "v2",
+            "map": "XON.10 / XON.3"
+          },
+          {
+            "identity": "rim",
+            "map": ".scopes[Role](classCode=IDENT)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Identifiers"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.id",
+        "path": "Organization.identifier.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.extension",
+        "path": "Organization.identifier.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.use",
+        "path": "Organization.identifier.use",
+        "short": "通常|公式|温度|セカンダリ|古い（知られている場合） / usual | official | temp | secondary | old (If known)",
+        "definition": "この識別子の目的。 / The purpose of this identifier.",
+        "comment": "アプリケーションは、識別子が一時的なものであると明示的に言っていない限り、永続的であると想定できます。 / Applications can assume that an identifier is permanent unless it explicitly says that it is temporary.",
+        "requirements": "特定の使用のコンテキストが一連の識別子の中から選択される適切な識別子を許可します。 / Allows the appropriate identifier for a particular context of use to be selected from among a set of identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "これは、アプリケーションが一時的なIDを永続的なIDと間違えてはならないため、「IS修飾子」とラベル付けされています。 / This is labeled as \"Is Modifier\" because applications should not mistake a temporary id for a permanent one.",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierUse"
+            }
+          ],
+          "strength": "required",
+          "description": "既知の場合、この識別子の目的を識別します。 / Identifies the purpose for this identifier, if known .",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.type",
+        "path": "Organization.identifier.type",
+        "short": "識別子の説明 / Description of identifier",
+        "definition": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.",
+        "comment": "この要素は、識別子の一般的なカテゴリのみを扱います。識別子。システムに対応するコードに使用しないでください。一部の識別子は、一般的な使用法により複数のカテゴリに分類される場合があります。システムがわかっている場合、タイプは常にシステム定義の一部であるため、タイプは不要です。ただし、システムが不明な識別子を処理する必要があることがよくあります。多くの異なるシステムが同じタイプを持っているため、タイプとシステムの間に1：1の関係はありません。 / This element deals only with general categories of identifiers.  It SHOULD not be used for codes that correspond 1..1 with the Identifier.system. Some identifiers may fall into multiple categories due to common usage.   Where the system is known, a type is unnecessary because the type is always part of the system definition. However systems often need to handle identifiers where the system is not known. There is not a 1:1 relationship between type and system, since many different systems have the same type.",
+        "requirements": "識別子システムが不明な場合、ユーザーは識別子を使用できます。 / Allows users to make use of identifiers when the identifier system is not known.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierType"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
+              "valueBoolean": true
+            }
+          ],
+          "strength": "extensible",
+          "description": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-type"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.5"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.system",
+        "path": "Organization.identifier.system",
+        "short": "識別子値の名前空間 / The namespace for the identifier value",
+        "definition": "値の名前空間、つまり一意のセット値を記述するURLを確立します。 / Establishes the namespace for the value - that is, a URL that describes a set values that are unique.",
+        "comment": "識別子。システムは常にケースに敏感です。 / Identifier.system is always case sensitive.",
+        "requirements": "識別子のセットがたくさんあります。2つの識別子を一致させるには、どのセットを扱っているかを知る必要があります。システムは、特定の一意の識別子セットを識別します。 / There are many sets  of identifiers.  To perform matching of two identifiers, we need to know what set we're dealing with. The system identifies a particular set of unique identifiers.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Identifier.system",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://jpfhir.jp/fhir/core/IdSystem/insurance-medical-institution-no",
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / EI-2-4"
+          },
+          {
+            "identity": "rim",
+            "map": "II.root or Role.id.root"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierType"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.value",
+        "path": "Organization.identifier.value",
+        "short": "一意の値 / The value that is unique",
+        "definition": "通常、識別子の部分はユーザーに関連し、システムのコンテキスト内で一意のユーザーに関連しています。 / The portion of the identifier typically relevant to the user and which is unique within the context of the system.",
+        "comment": "値が完全なURIの場合、システムはurn：ietf：rfc：3986でなければなりません。値の主な目的は、計算マッピングです。その結果、比較目的で正規化される可能性があります（例えば、有意でない白文字、ダッシュなどの削除）ヒューマンディスプレイ用の値は、[レンダリングされた値拡張]（拡張レンダリングValue.html）を使用して伝達できます。識別子。価値は、識別子の知識を使用しない限り、ケースに敏感なものとして扱われます。システムにより、プロセッサーは、非セイズに固有の処理が安全であると確信できます。 / If the value is a full URI, then the system SHALL be urn:ietf:rfc:3986.  The value's primary purpose is computational mapping.  As a result, it may be normalized for comparison purposes (e.g. removing non-significant whitespace, dashes, etc.)  A value formatted for human display can be conveyed using the [Rendered Value extension](extension-rendered-value.html). Identifier.value is to be treated as case sensitive unless knowledge of the Identifier.system allows the processer to be confident that non-case-sensitive processing is safe.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.value",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.1 / EI.1"
+          },
+          {
+            "identity": "rim",
+            "map": "II.extension or II.root if system indicates OID or GUID (Or Role.id.extension or root)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Value"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.period",
+        "path": "Organization.identifier.period",
+        "short": "IDが使用に有効だった時間期間 / Time period when id is/was valid for use",
+        "definition": "識別子が使用される/有効な期間。 / Time period during which identifier is/was valid for use.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.7 + CX.8"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.effectiveTime or implied by context"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:medicalInstitutionCode.assigner",
+        "path": "Organization.identifier.assigner",
+        "short": "IDを発行した組織（単なるテキストである可能性があります） / Organization that issued id (may be just text)",
+        "definition": "識別子を発行/管理する組織。 / Organization that issued/manages the identifier.",
+        "comment": "識別子は、.reference要素を省略し、割り当て組織に関する名前またはその他のテキスト情報を反映した.display要素のみを含む場合があります。 / The Identifier.assigner may omit the .reference element and only contain a .display element reflecting the name or other textual information about the assigning organization.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.assigner",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Organization"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / (CX.4,CX.9,CX.10)"
+          },
+          {
+            "identity": "rim",
+            "map": "II.assigningAuthorityName but note that this is an improper use by the definition of the field.  Also Role.scoper"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierIssuingAuthority"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber",
+        "path": "Organization.identifier",
+        "sliceName": "insurerNumber",
+        "short": "複数のシステムでこの組織を識別【詳細参照】",
+        "definition": "複数の異種システムにまたがって組織を識別するための識別子",
+        "comment": "健康保険組合などの保険者の保険者番号を表現する際のIdentifier表現に使用する  \nsystem要素には保険者番号を示すOID\" http://jpfhir.jp/fhir/core/mhlw/IdSystem/InsurerNumber\"を指定する。",
+        "requirements": "組織は様々な ID で知られている。いくつかの機関では複数のIDを保持しており、ほとんどの機関では、組織に関する他の組織との交換のためにIDを収集している。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.identifier",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "condition": [
+          "org-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "w5",
+            "map": "FiveWs.identifier"
+          },
+          {
+            "identity": "v2",
+            "map": "XON.10 / XON.3"
+          },
+          {
+            "identity": "rim",
+            "map": ".scopes[Role](classCode=IDENT)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Identifiers"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.id",
+        "path": "Organization.identifier.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.extension",
+        "path": "Organization.identifier.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.use",
+        "path": "Organization.identifier.use",
+        "short": "通常|公式|温度|セカンダリ|古い（知られている場合） / usual | official | temp | secondary | old (If known)",
+        "definition": "この識別子の目的。 / The purpose of this identifier.",
+        "comment": "アプリケーションは、識別子が一時的なものであると明示的に言っていない限り、永続的であると想定できます。 / Applications can assume that an identifier is permanent unless it explicitly says that it is temporary.",
+        "requirements": "特定の使用のコンテキストが一連の識別子の中から選択される適切な識別子を許可します。 / Allows the appropriate identifier for a particular context of use to be selected from among a set of identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "これは、アプリケーションが一時的なIDを永続的なIDと間違えてはならないため、「IS修飾子」とラベル付けされています。 / This is labeled as \"Is Modifier\" because applications should not mistake a temporary id for a permanent one.",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierUse"
+            }
+          ],
+          "strength": "required",
+          "description": "既知の場合、この識別子の目的を識別します。 / Identifies the purpose for this identifier, if known .",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.type",
+        "path": "Organization.identifier.type",
+        "short": "識別子の説明 / Description of identifier",
+        "definition": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.",
+        "comment": "この要素は、識別子の一般的なカテゴリのみを扱います。識別子。システムに対応するコードに使用しないでください。一部の識別子は、一般的な使用法により複数のカテゴリに分類される場合があります。システムがわかっている場合、タイプは常にシステム定義の一部であるため、タイプは不要です。ただし、システムが不明な識別子を処理する必要があることがよくあります。多くの異なるシステムが同じタイプを持っているため、タイプとシステムの間に1：1の関係はありません。 / This element deals only with general categories of identifiers.  It SHOULD not be used for codes that correspond 1..1 with the Identifier.system. Some identifiers may fall into multiple categories due to common usage.   Where the system is known, a type is unnecessary because the type is always part of the system definition. However systems often need to handle identifiers where the system is not known. There is not a 1:1 relationship between type and system, since many different systems have the same type.",
+        "requirements": "識別子システムが不明な場合、ユーザーは識別子を使用できます。 / Allows users to make use of identifiers when the identifier system is not known.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierType"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
+              "valueBoolean": true
+            }
+          ],
+          "strength": "extensible",
+          "description": "特定の目的に使用する識別子を決定するために使用できる識別子のコード化されたタイプ。 / A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-type"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.5"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.system",
+        "path": "Organization.identifier.system",
+        "short": "識別子値の名前空間 / The namespace for the identifier value",
+        "definition": "値の名前空間、つまり一意のセット値を記述するURLを確立します。 / Establishes the namespace for the value - that is, a URL that describes a set values that are unique.",
+        "comment": "識別子。システムは常にケースに敏感です。 / Identifier.system is always case sensitive.",
+        "requirements": "識別子のセットがたくさんあります。2つの識別子を一致させるには、どのセットを扱っているかを知る必要があります。システムは、特定の一意の識別子セットを識別します。 / There are many sets  of identifiers.  To perform matching of two identifiers, we need to know what set we're dealing with. The system identifies a particular set of unique identifiers.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Identifier.system",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://jpfhir.jp/fhir/core/mhlw/IdSystem/InsurerNumber",
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / EI-2-4"
+          },
+          {
+            "identity": "rim",
+            "map": "II.root or Role.id.root"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierType"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.value",
+        "path": "Organization.identifier.value",
+        "short": "一意の値 / The value that is unique",
+        "definition": "通常、識別子の部分はユーザーに関連し、システムのコンテキスト内で一意のユーザーに関連しています。 / The portion of the identifier typically relevant to the user and which is unique within the context of the system.",
+        "comment": "値が完全なURIの場合、システムはurn：ietf：rfc：3986でなければなりません。値の主な目的は、計算マッピングです。その結果、比較目的で正規化される可能性があります（例えば、有意でない白文字、ダッシュなどの削除）ヒューマンディスプレイ用の値は、[レンダリングされた値拡張]（拡張レンダリングValue.html）を使用して伝達できます。識別子。価値は、識別子の知識を使用しない限り、ケースに敏感なものとして扱われます。システムにより、プロセッサーは、非セイズに固有の処理が安全であると確信できます。 / If the value is a full URI, then the system SHALL be urn:ietf:rfc:3986.  The value's primary purpose is computational mapping.  As a result, it may be normalized for comparison purposes (e.g. removing non-significant whitespace, dashes, etc.)  A value formatted for human display can be conveyed using the [Rendered Value extension](extension-rendered-value.html). Identifier.value is to be treated as case sensitive unless knowledge of the Identifier.system allows the processer to be confident that non-case-sensitive processing is safe.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.value",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.1 / EI.1"
+          },
+          {
+            "identity": "rim",
+            "map": "II.extension or II.root if system indicates OID or GUID (Or Role.id.extension or root)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Value"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.period",
+        "path": "Organization.identifier.period",
+        "short": "IDが使用に有効だった時間期間 / Time period when id is/was valid for use",
+        "definition": "識別子が使用される/有効な期間。 / Time period during which identifier is/was valid for use.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.7 + CX.8"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.effectiveTime or implied by context"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Organization.identifier:insurerNumber.assigner",
+        "path": "Organization.identifier.assigner",
+        "short": "IDを発行した組織（単なるテキストである可能性があります） / Organization that issued id (may be just text)",
+        "definition": "識別子を発行/管理する組織。 / Organization that issued/manages the identifier.",
+        "comment": "識別子は、.reference要素を省略し、割り当て組織に関する名前またはその他のテキスト情報を反映した.display要素のみを含む場合があります。 / The Identifier.assigner may omit the .reference element and only contain a .display element reflecting the name or other textual information about the assigning organization.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.assigner",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Organization"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / (CX.4,CX.9,CX.10)"
+          },
+          {
+            "identity": "rim",
+            "map": "II.assigningAuthorityName but note that this is an improper use by the definition of the field.  Also Role.scoper"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierIssuingAuthority"
+          }
+        ]
+      },
+      {
+        "id": "Organization.active",
+        "path": "Organization.active",
+        "short": "組織の記録がまだ有効に使われているかどうか【詳細参照】",
+        "definition": "このアクティブフラグは、組織を一時的に閉鎖したり、工事中であることを示すために使用されることを意図していない。代わりに、組織内の場所(複数可)は、中断されたステータスを持っている必要がある。一時停止の理由の詳細が必要な場合は、この要素の拡張子を使用する必要がある。  \nこの要素は、リソースがエラーで作成されたことをマークするために使用される可能性があるため、修飾子としてラベル付けされている。",
+        "comment": "このアクティブなフラグは、組織を一時的に閉鎖したり、建設中のマークとして使用するために意図されていません。代わりに、組織内の場所に中断ステータスを設定する必要があります。中断の理由の詳細が必要な場合は、この要素の拡張機能を使用する必要があります。\n\nこの要素は修飾子としてラベル付けされています。これは、リソースが誤って作成されたことを示すために使用できるためです。",
+        "requirements": "レコードが使用されなくなったことを示すためのフラグが必要で、一般的にUIではユーザのために非表示にする必要がある。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Organization.active",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "boolean"
+          }
+        ],
+        "meaningWhenMissing": "This resource is generally assumed to be active if no value is provided for the active element",
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "This element is labelled as a modifier because it is a status element that can indicate that a record should not be treated as valid",
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "w5",
+            "map": "FiveWs.status"
+          },
+          {
+            "identity": "v2",
+            "map": "No equivalent in HL7 v2"
+          },
+          {
+            "identity": "rim",
+            "map": ".status"
+          },
+          {
+            "identity": "servd",
+            "map": "./Status (however this concept in ServD more covers why the organization is active or not, could be delisted, deregistered, not operational yet) this could alternatively be derived from ./StartDate and ./EndDate and given a context date."
+          }
+        ]
+      },
+      {
+        "id": "Organization.type",
+        "path": "Organization.type",
+        "short": "組織の種類【詳細参照】",
+        "definition": "その種類の組織。",
+        "comment": "n組織は、企業、病棟、セクション、臨床チーム、政府部門などにすることができる。多くのアプリケーションでは、コードは、特定の組織を識別するために使用されている（と言う、病棟）別の同じタイプのものとは対照的に - これらは識別子ではなく、コードである。  \n複数のタイプが適切かどうかを検討する際には、異なるタイプが組織の異なるサブ領域に存在する可能性が高いため、子どもの組織の方がより適切な使用法であるかどうかを評価する必要がある。これは、宗教、学術、医療センターのように、タイプの価値観が直交する場合に使用される可能性が高い。  \nいくつかの法域では、このオプション性を単一のカーディナリティとしてプロファイルすると予想される。",
+        "requirements": "これがある組織の種類を追跡することができる必要がある - 異なる組織の種類は、異なる用途を持っている。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.type",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "OrganizationType"
+            }
+          ],
+          "strength": "example",
+          "description": "「組織を分類するために使用されます。」",
+          "valueSet": "http://hl7.org/fhir/ValueSet/organization-type"
+        },
+        "mapping": [
+          {
+            "identity": "w5",
+            "map": "FiveWs.class"
+          },
+          {
+            "identity": "v2",
+            "map": "No equivalent in v2"
+          },
+          {
+            "identity": "rim",
+            "map": ".code"
+          },
+          {
+            "identity": "servd",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.name",
+        "path": "Organization.name",
+        "short": "診療科の名称",
+        "definition": "医療文書などに印刷、または画面に表示する際に用いられる診療科の名称。\r\n必ずしも正式名称でなく、略称でも差し支えない。",
+        "comment": "組織名が変更された場合は、旧名称をエイリアス欄に入れて検索で見つけられるようにすることを検討すべきである。",
+        "requirements": "組織のラベルとして名前を使用する必要がある。",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Organization.name",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "condition": [
+          "org-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "mustSupport": true,
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XON.1"
+          },
+          {
+            "identity": "rim",
+            "map": ".name"
+          },
+          {
+            "identity": "servd",
+            "map": ".PreferredName/Name"
+          }
+        ]
+      },
+      {
+        "id": "Organization.alias",
+        "path": "Organization.alias",
+        "short": "組織が知られている、または過去に知られていた別名のリスト【詳細参照】",
+        "definition": "組織がその名で知られている、または過去にその名で知られていた代替名のリスト。",
+        "comment": "これは、名前がいつ使用されたかを追跡することを目的としたものではなく、古い名前でも組織を特定できるように検索を支援することを目的としているため、別名や歴史的な名前に関連付けられた日付はない。",
+        "requirements": "時間の経過とともに、場所や組織はさまざまな変化を経て、さまざまな名前で知ることができる。  \n組織が知っている前の名前を知るための検索には、非常に便利なことができる。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.alias",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".name"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom",
+        "path": "Organization.telecom",
+        "short": "組織の連絡先詳細【詳細参照】",
+        "definition": "組織の連絡先詳細",
+        "comment": "使用コード「home」は使用しないこと。これらの連絡先は、組織に雇用されている人や組織を代表する人の連絡先ではなく、組織自体の公式な連絡先であることに注意すること。",
+        "requirements": "組織のヒューマンコンタクト。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.telecom",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ],
+        "condition": [
+          "org-3"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "org-3",
+            "severity": "error",
+            "human": "組織のテレコムは、家庭で使用することはできません。",
+            "expression": "where(use = 'home').empty()",
+            "xpath": "count(f:use[@value='home']) = 0"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "ORC-22?"
+          },
+          {
+            "identity": "rim",
+            "map": ".telecom"
+          },
+          {
+            "identity": "servd",
+            "map": "./ContactPoints"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.id",
+        "path": "Organization.telecom.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "エレメント相互参照のためのユニークID",
+        "definition": "リソース内の要素の固有ID（内部参照用）。これは、スペースを含まない任意の文字列値である可能性があります。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.extension",
+        "path": "Organization.telecom.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "拡張子は常にURLで切り片にされます。",
+          "rules": "open"
+        },
+        "short": "実装によって定義される追加コンテンツ",
+        "definition": "「要素の基本的な定義に含まれない追加情報を表すために使用されることがあります。拡張機能の使用を安全かつ管理しやすくするために、定義および使用に適用される厳格なガバナンスのセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たす必要のある要件のセットがあります。」",
+        "comment": "どのようなアプリケーション、プロジェクト、または標準が拡張機能を使用しているかに関わらず、拡張機能の使用には決して汚名が付くわけではありません - それらを使用または定義する機関または管轄区域に関係なく。拡張機能の使用こそが、FHIR仕様を誰にとっても簡単なコアレベルで維持することを可能にします。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.system",
+        "path": "Organization.telecom.system",
+        "short": "phone | fax | email | pager | url | sms | other 【JP_Patient.telecomを参照。】",
+        "definition": "連絡先用通信フォーム - どの通信システムを使用するには接点が必要ですか。",
+        "comment": "連絡先の種別をValueSet(ContactPointSystem)より選択する。  　- phone : 電話　- fax : Fax 　- email : 電子メール　- pager : ポケットベル　- url : 電話、ファックス、ポケットベル、または電子メールアドレスではなく、URLとして表される連絡先。これはWebサイト、ブログ、Skype、Twitter、Facebookなどのさまざまな機関または個人の連絡先を対象としている。電子メールアドレスには使用しないこと。　- sms : SMSメッセージの送信に使用できる連絡先（携帯電話、一部の固定電話など）  　- other : 電話、Fax、ポケットベル、または電子メールアドレスではなく、URLとして表現できない連絡先。例：内部メールアドレス。これは、URLとして表現できる連絡先（Skype、Twitter、Facebookなど）には使用しないこと。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "ContactPoint.system",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "condition": [
+          "cpt-2"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "ContactPointSystem"
+            }
+          ],
+          "strength": "required",
+          "description": "「連絡先のための通信フォーム。」",
+          "valueSet": "http://hl7.org/fhir/ValueSet/contact-point-system|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XTN.3"
+          },
+          {
+            "identity": "rim",
+            "map": "./scheme"
+          },
+          {
+            "identity": "servd",
+            "map": "./ContactPointType"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.value",
+        "path": "Organization.telecom.value",
+        "short": "実際の連絡先の詳細",
+        "definition": "指定されたコミュニケーションシステムに意味がある形式での実際の連絡先の詳細（電話番号または電子メールアドレス）を提供してください。",
+        "comment": "連絡先の番号やメールアドレス",
+        "requirements": "Need to support legacy numbers that are not in a tightly controlled format.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "ContactPoint.value",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XTN.1 (or XTN.12)"
+          },
+          {
+            "identity": "rim",
+            "map": "./url"
+          },
+          {
+            "identity": "servd",
+            "map": "./Value"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.use",
+        "path": "Organization.telecom.use",
+        "short": "work | temp | old | mobile - 連絡先の用途等 【JP_Patient.telecomを参照。】homeは使用しないこと。",
+        "definition": "「接点の目的を特定する。」(Setten no mokuteki wo tokutei suru.)",
+        "comment": "患者の連絡先の種別をValueSet(ContactPointUse)より選択する。  一時的なものまたは古いものであると明示しない限り、連絡先が最新とみなされる。  \n　- work : 職場  \n　- temp : 一時的  \n　- old : 以前の  \n　- mobile : モバイル機器",
+        "requirements": "Need to track the way a person uses this contact, so a user can choose which is appropriate for their purpose.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "ContactPoint.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "This is labeled as \"Is Modifier\" because applications should not mistake a temporary or old contact etc.for a current/permanent one",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "ContactPointUse"
+            }
+          ],
+          "strength": "required",
+          "description": "「接点の使用。」(Setten no shiyō.)",
+          "valueSet": "http://hl7.org/fhir/ValueSet/contact-point-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XTN.2 - but often indicated by field"
+          },
+          {
+            "identity": "rim",
+            "map": "unique(./use)"
+          },
+          {
+            "identity": "servd",
+            "map": "./ContactPointPurpose"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.rank",
+        "path": "Organization.telecom.rank",
+        "short": "「使用の優先順位を指定してください（1が最も優先度が高い）」",
+        "definition": "「一連のコンタクトを使う上で好ましい順序を指定します。ランク値が低いContactPointsの方が、ランク値が高いものよりも優先されます。」",
+        "comment": "連絡先の使用順序（1 = 最高）",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "ContactPoint.rank",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "positiveInt"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "n/a"
+          },
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.telecom.period",
+        "path": "Organization.telecom.period",
+        "short": "「コンタクトポイントが使用されている時間帯」",
+        "definition": "「接点が使用されていた/現在使用中である時間期間」",
+        "comment": "連絡先が使用されていた/されている期間",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "ContactPoint.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "./usablePeriod[type=\"IVL<TS>\"]"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address",
+        "path": "Organization.address",
+        "short": "組織の住所【詳細参照】",
+        "definition": "組織の住所",
+        "comment": "組織は、用途や適用期間が異なる複数の住所を持っている場合がある。使用コード「home」は使用しないこと。",
+        "requirements": "連絡、請求、または報告のために、組織のアドレスを追跡する必要がある場合がある。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.address",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Address"
+          }
+        ],
+        "condition": [
+          "org-2"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "org-2",
+            "severity": "error",
+            "human": "組織の住所は「家」として使用することはできません。 (Soshiki no juusho wa \"ie\" to shite shiyō suru koto wa dekimasen.)",
+            "expression": "where(use = 'home').empty()",
+            "xpath": "count(f:use[@value='home']) = 0"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "ORC-23?"
+          },
+          {
+            "identity": "rim",
+            "map": ".address"
+          },
+          {
+            "identity": "servd",
+            "map": "./PrimaryAddress and ./OtherAddresses"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.id",
+        "path": "Organization.address.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.extension",
+        "path": "Organization.address.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.use",
+        "path": "Organization.address.use",
+        "short": "work | temp | old | billing - purpose of this address　住所の用途 【JP_Patient.address参照】使用コード「home」は使用しない。",
+        "definition": "The purpose of this address.  \n住所の用途",
+        "comment": "住所の用途をValueSet(AddressUse)より選択する。  \n　- work : 職場  \n　- temp : 一時的  \n　- old : 以前の  \n　- billing : 請求書、インボイス、領収書などの送付用",
+        "requirements": "多くのリストから適切なアドレスを選択できるようにします。 / Allows an appropriate address to be chosen from a list of many.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "これは、アプリケーションが一時的または古い住所などを間違えないでください。 / This is labeled as \"Is Modifier\" because applications should not mistake a temporary or old address etc.for a current/permanent one",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "AddressUse"
+            }
+          ],
+          "strength": "required",
+          "description": "アドレスの使用。 / The use of an address.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/address-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.7"
+          },
+          {
+            "identity": "rim",
+            "map": "unique(./use)"
+          },
+          {
+            "identity": "servd",
+            "map": "./AddressPurpose"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.type",
+        "path": "Organization.address.type",
+        "short": "postal | physical | both 【JP_Patient.address参照】",
+        "definition": "住所（訪問できる住所）と郵送先住所（私書箱や気付住所など）を区別する。ほとんどのアドレスは両方。",
+        "comment": "住所の種類をValueSet(AddressType)より選択する。  \n　- postal : 郵送先 - 私書箱、気付の住所  \n　- physical : 訪れることのできる物理的な住所  \n　- both : postalとphysicalの両方",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "AddressType"
+            }
+          ],
+          "strength": "required",
+          "description": "アドレスのタイプ（物理 /郵便）。 / The type of an address (physical / postal).",
+          "valueSet": "http://hl7.org/fhir/ValueSet/address-type|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.18"
+          },
+          {
+            "identity": "rim",
+            "map": "unique(./use)"
+          },
+          {
+            "identity": "vcard",
+            "map": "address type parameter"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.text",
+        "path": "Organization.address.text",
+        "short": "住所のテキスト表現 【JP_Patient.address参照】",
+        "definition": "表示するアドレス全体を指定する  \n例：郵便ラベル。これは、特定の部品の代わりに、または特定の部品と同様に提供される場合がある。",
+        "comment": "テキスト表現とパーツの両方を提供できる。アドレスを更新するアプリケーションは、テキストとパーツの両方が存在する場合、パーツにないコンテンツはテキストに含まれないようにする必要がある。  \n　- 住所を(都道府県や市町村などに)分離して管理していない場合は、textに入れる。  \n　- 住所を(都道府県や市町村などに)分離して管理している場合でも、まとめてtextに入れること。  \n　- 郵便番号は含めない。  \n　  \n例：東京都文京区本郷7-3-1",
+        "requirements": "レンダリング可能で、不コード化されていないフォーム。 / A renderable, unencoded form.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.text",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "example": [
+          {
+            "label": "Jp",
+            "valueString": "東京都文京区本郷7-3-1"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.1 + XAD.2 + XAD.3 + XAD.4 + XAD.5 + XAD.6"
+          },
+          {
+            "identity": "rim",
+            "map": "./formatted"
+          },
+          {
+            "identity": "vcard",
+            "map": "address label parameter"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.line",
+        "path": "Organization.address.line",
+        "short": "ストリート名や番地など 【JP_Patient.address参照】",
+        "definition": "このコンポーネントには、家番号、アパート番号、通りの名前、通りの方向、P.O。が含まれる。ボックス番号、配達のヒント、および同様の住所情報など。",
+        "comment": "【JP Core仕様】state要素とcity要素で表現しなかったそのあとの住所部分を番地以降の部分も含めてすべていれる。  \n英数字は半角でも全角でもよい。文字列の前後および途中に空白文字を含めないこと。  \n繰り返し要素が許されているので、区切りを表現したい場合には、複数要素に分けて格納してもよい。  \n　  \n例：本郷7-3-1  \n例：大字石神９７６  \n例：藤崎町大字藤崎字西村1-2 春山荘201号室",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Address.line",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "orderMeaning": "The order in which lines should appear in an address label",
+        "example": [
+          {
+            "label": "Jp",
+            "valueString": "本郷7-3-1"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.1 + XAD.2 (note: XAD.1 and XAD.2 have different meanings for a company address than for a person address)"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = AL]"
+          },
+          {
+            "identity": "vcard",
+            "map": "street"
+          },
+          {
+            "identity": "servd",
+            "map": "./StreetAddress (newline delimitted)"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.city",
+        "path": "Organization.address.city",
+        "short": "市区町村名 【JP_Patient.address参照】",
+        "definition": "n市、町、郊外、村、その他のコミュニティまたは配達センターの名前。",
+        "comment": "１MBを超えないこと。  【JP Core仕様】郡市区町村部分だけを「郡」「市」「区」「町」「村」などの文字を含めて設定する。 例：文京区",
+        "alias": [
+          "Municpality"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.city",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "example": [
+          {
+            "label": "Jp",
+            "valueString": "文京区"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.3"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = CTY]"
+          },
+          {
+            "identity": "vcard",
+            "map": "locality"
+          },
+          {
+            "identity": "servd",
+            "map": "./Jurisdiction"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.district",
+        "path": "Organization.address.district",
+        "short": "地区名 【JP_Patient.address参照】",
+        "definition": "管理エリア（郡）の名前。 / The name of the administrative area (county).",
+        "comment": "【JP Core仕様】日本の住所では使用しない。",
+        "alias": [
+          "County"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.district",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.9"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = CNT | CPA]"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.state",
+        "path": "Organization.address.state",
+        "short": "国の次の地区単位 【JP_Patient.address参照】",
+        "definition": "国の主権が制限されている国のサブユニット。日本の場合、都道府県名。",
+        "comment": "１MBを超えないこと。  都道府県名。「都」「道」「府」「県」のそれぞれの文字を含める。 例：東京都",
+        "alias": [
+          "Province",
+          "Territory"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.state",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "example": [
+          {
+            "label": "Jp",
+            "valueString": "東京都"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.4"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = STA]"
+          },
+          {
+            "identity": "vcard",
+            "map": "region"
+          },
+          {
+            "identity": "servd",
+            "map": "./Region"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.postalCode",
+        "path": "Organization.address.postalCode",
+        "short": "郵便番号 【JP_Patient.address参照】",
+        "definition": "郵便サービスによって定義された地域を指定する郵便番号。 / A postal code designating a region defined by the postal service.",
+        "comment": "郵便番号。日本の郵便番号の場合には3桁数字とハイフン1文字と4桁数字からなる半角８文字、または最初の3桁だけの3文字のいずれかとする。 例：113-8655",
+        "alias": [
+          "Zip"
+        ],
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.postalCode",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "example": [
+          {
+            "label": "Jp",
+            "valueString": "113-8655"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.5"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = ZIP]"
+          },
+          {
+            "identity": "vcard",
+            "map": "code"
+          },
+          {
+            "identity": "servd",
+            "map": "./PostalIdentificationCode"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.country",
+        "path": "Organization.address.country",
+        "short": "国名またはISO 3166コード　(ISO 3166 2 or 3文字こーど)",
+        "definition": "国-一般的に理解されている、または一般的に受け入れられている国の国名かコード。",
+        "comment": "ISO 3166 3文字コードは、人間が読める国名の代わりに使用する。  ISO 3166の2文字または3文字のコード.  日本であれば、jpまたはjpn",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.country",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.6"
+          },
+          {
+            "identity": "rim",
+            "map": "AD.part[parttype = CNT]"
+          },
+          {
+            "identity": "vcard",
+            "map": "country"
+          },
+          {
+            "identity": "servd",
+            "map": "./Country"
+          }
+        ]
+      },
+      {
+        "id": "Organization.address.period",
+        "path": "Organization.address.period",
+        "short": "住所が使用されていた（いる）期間",
+        "definition": "住所が使用されていた（いる）期間",
+        "comment": "住所が使用されていた/されている期間。 期間は時間の範囲を指定する。使用状況はその期間全体に適用されるか、範囲から1つの値が適用される。  期間は、時間間隔（経過時間の測定値）には使用されない。",
+        "requirements": "アドレスを歴史的な文脈に配置できるようにします。 / Allows addresses to be placed in historical context.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Address.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子供が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "XAD.12 / XAD.13 + XAD.14"
+          },
+          {
+            "identity": "rim",
+            "map": "./usablePeriod[type=\"IVL<TS>\"]"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf",
+        "path": "Organization.partOf",
+        "short": "【詳細参照】",
+        "definition": "この組織が一部を構成する組織",
+        "comment": "参照は、実際のFHIRリソースへの参照である必要があり、内容に辿り着ける（解決できる）必要がある（アクセス制御、一時的な使用不可などを考慮に入れる）。解決は、URLから取得するか、リソースタイプによって該当する場合は、絶対参照を正規URLとして扱い、ローカルレジストリ/リポジトリで検索することによって行うことができる。",
+        "requirements": "Need to be able to track the hierarchy of organizations within an organization.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Organization.partOf",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+            ],
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy",
+                "valueBoolean": true
+              }
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "mustSupport": true,
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "No equivalent in HL7 v2"
+          },
+          {
+            "identity": "rim",
+            "map": ".playedBy[classCode=Part].scoper"
+          },
+          {
+            "identity": "servd",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.id",
+        "path": "Organization.partOf.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.extension",
+        "path": "Organization.partOf.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.reference",
+        "path": "Organization.partOf.reference",
+        "short": "この診療科が所属する医療機関の情報",
+        "definition": "Bundleリソースに格納される、処方医療機関を表すOrganizationリソースのfullUrl要素に指定されるUUIDを指定や、Containedリソースに格納される相対参照を使用する。",
+        "comment": "絶対URLを使用すると、クラウド/Webコンテキストに適した安定したスケーラブルなアプローチが提供されますが、相対的/論理的な参照を使用すると、閉じたエコシステムの境界を横切る際に使用するのに適した柔軟なアプローチが提供されます。絶対URLは、FHIR Restfulサーバーを指す必要はありませんが、これは好ましいアプローチです。URLが構造 \"/[type]/[id]\"に適合している場合、参照がFHIR Restfulサーバーへの参照であると想定する必要があります。 / Using absolute URLs provides a stable scalable approach suitable for a cloud/web context, while using relative/logical references provides a flexible approach suitable for use when trading across closed eco-system boundaries.   Absolute URLs do not need to point to a FHIR RESTful server, though this is the preferred approach. If the URL conforms to the structure \"/[type]/[id]\" then it should be assumed that the reference is to a FHIR RESTful server.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Reference.reference",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "condition": [
+          "ref-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "mustSupport": true,
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.type",
+        "path": "Organization.partOf.type",
+        "short": "入力リファレンスを指す（例：「患者」） / Type the reference refers to (e.g. \"Patient\")",
+        "definition": "参照のターゲットの予想タイプ。reference.typeとreference.Referenceが入力され、参照.ReferenceがFHIR URLである場合、どちらも一貫しているものとします。\n\nこのタイプは、このリファレンスが指すタイプであるリソース定義の標準URLです。参照は、http：//hl7.org/fhir/structuredefinition/に関連するURLです。「患者」はhttp://hl7.org/fhir/structuredefinition/patientへの参照です。絶対URLは、論理モデルでのみ許可されます（リソースではなく論理モデルの参照でのみ使用できます）。 / The expected type of the target of the reference. If both Reference.type and Reference.reference are populated and Reference.reference is a FHIR URL, both SHALL be consistent.\n\nThe type is the Canonical URL of Resource Definition that is the type this reference refers to. References are URLs that are relative to http://hl7.org/fhir/StructureDefinition/ e.g. \"Patient\" is a reference to http://hl7.org/fhir/StructureDefinition/Patient. Absolute URLs are only allowed for logical models (and can only be used in references in logical models, not resources).",
+        "comment": "この要素は、参照のターゲットのタイプを示すために使用されます。これは、他の要素の中で存在する（またはそうでない）使用される場合があります。場合によっては、ターゲットのタイプは、参照の検査（例：RESTFUL URL）または参照のターゲットを解決することによって決定される場合があります。タイプと参照の両方が提供されている場合、参照は指定したものと同じタイプのリソースに解決するものとします。 / This element is used to indicate the type of  the target of the reference. This may be used which ever of the other elements are populated (or not). In some cases, the type of the target may be determined by inspection of the reference (e.g. a RESTful URL) or by resolving the target of the reference; if both the type and a reference is provided, the reference SHALL resolve to a resource of the same type as that specified.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Reference.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "FHIRResourceTypeExt"
+            }
+          ],
+          "strength": "extensible",
+          "description": "AAリソース（または、論理モデルの場合、論理モデルのURI）。 / Aa resource (or, for logical models, the URI of the logical model).",
+          "valueSet": "http://hl7.org/fhir/ValueSet/resource-types"
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.identifier",
+        "path": "Organization.partOf.identifier",
+        "short": "文字通りの参照が不明な場合、論理的参照 / Logical reference, when literal reference is not known",
+        "definition": "ターゲットリソースのidentifier。これは、他のリソースを直接参照する方法がない場合に使用されます。これは、それが表すエンティティがFHIRサーバーを介して利用できないか、リソースの作成者が既知のidentifierを実際の場所に変換する方法がないためです。。Identifierが実際にFHIRインスタンスとして公開されているものを指し示すことを指し示す必要はありませんが、FHIRインスタンスとして公開されると予想されるビジネス概念を指し示し、その場合は参照によって許可されるFHIRリソースタイプ。 / An identifier for the target resource. This is used when there is no way to reference the other resource directly, either because the entity it represents is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference.",
+        "comment": "参照の代わりにidentifierが提供される場合、参照を処理するシステムは、identifierが使用されるビジネスコンテキストを理解している場合にのみidentifierを参照に解決できます。これはグローバル（たとえば、全国のidentifier）であることがありますが、しばしばそうではありません。このため、参照を使用して作業するために説明されている有用なメカニズム（たとえば、チェーン、含まれる）はありません。また、サーバーは参照を解決できるとは期待されていません。サーバーは、identifierベースの参照を触れずに受け入れ、それを解決し、それを拒否することができます -  capabilitystatement.rest.resource.ReferencePolicyを参照してください。\n\nidentifierとリテラル参照の両方が提供される場合、リテラル参照が推奨されます。identifierがリテラルリファレンスと一致することを確認するために、リソースの処理リソースの処理が許可されていますが、必須ではありません - \n\n論理参照を文字通り参照に変換するアプリケーションは、論理参照の存在を残すか、それを削除することを選択する場合があります。\n\n参照は、FHIRリソースとして表現できる可能性のある構造を指すことを目的としていますが、実際のFHIRリソースインスタンスとして存在する必要はありません。 。identifierと呼ばれるコンテンツは、参照のために許可されているリソースタイプの制限によって暗示される論理的制約を満たす必要があります。たとえば、タイプが参照されている場合、薬物処方のidentifierを送信することは合法ではありません（観察|診断障害）。参照用のユースケースの1つは、FHIR表現が存在しない状況です（タイプが参照（任意）。 / When an identifier is provided in place of a reference, any system processing the reference will only be able to resolve the identifier to a reference if it understands the business context in which the identifier is used. Sometimes this is global (e.g. a national identifier) but often it is not. For this reason, none of the useful mechanisms described for working with references (e.g. chaining, includes) are possible, nor should servers be expected to be able resolve the reference. Servers may accept an identifier based reference untouched, resolve it, and/or reject it - see CapabilityStatement.rest.resource.referencePolicy. \n\nWhen both an identifier and a literal reference are provided, the literal reference is preferred. Applications processing the resource are allowed - but not required - to check that the identifier matches the literal reference\n\nApplications converting a logical reference to a literal reference may choose to leave the logical reference present, or remove it.\n\nReference is intended to point to a structure that can potentially be expressed as a FHIR resource, though there is no need for it to exist as an actual FHIR resource instance - except in as much as an application wishes to actual find the target of the reference. The content referred to be the identifier must meet the logical constraints implied by any limitations on what resource types are permitted for the reference.  For example, it would not be legitimate to send the identifier for a drug prescription if the type were Reference(Observation|DiagnosticReport).  One of the use-cases for Reference.identifier is the situation where no FHIR representation exists (where the type is Reference (Any).",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Reference.identifier",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".identifier"
+          }
+        ]
+      },
+      {
+        "id": "Organization.partOf.display",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-translatable",
+            "valueBoolean": true
+          }
+        ],
+        "path": "Organization.partOf.display",
+        "short": "リソースのテキスト代替 / Text alternative for the resource",
+        "definition": "リソースリファレンスに加えてリソースを識別するプレーンテキストの叙述(Narative)。 / Plain text narrative that identifies the resource in addition to the resource reference.",
+        "comment": "これは通常、参照されるリソースのリソース.textと同じではありません。目的は、参照されているものを完全に説明するのではなく、特定することです。 / This is generally not the same as the Resource.text of the referenced resource.  The purpose is to identify what's being referenced, not to fully describe it.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Reference.display",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact",
+        "path": "Organization.contact",
+        "short": "特定の目的のための組織の連絡先【詳細参照】",
+        "definition": "特定の目的のための組織の連絡先",
+        "comment": "同じ目的で複数の連絡先が提供されている場合、どの連絡先を使用するのが好ましいかを判断するために使用できる標準の拡張extension がある。",
+        "requirements": "より大きな組織内で割り当てられた連絡先を追跡する必要がある。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.contact",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "BackboneElement"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": ".contactParty"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.id",
+        "path": "Organization.contact.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "エレメント相互参照のためのユニークID",
+        "definition": "リソース内の要素の固有ID（内部参照用）。これは、スペースを含まない任意の文字列値である可能性があります。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.extension",
+        "path": "Organization.contact.extension",
+        "short": "実装によって定義される追加コンテンツ",
+        "definition": "「要素の基本的な定義に含まれない追加情報を表すために使用されることがあります。拡張機能の使用を安全かつ管理しやすくするために、定義および使用に適用される厳格なガバナンスのセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たす必要のある要件のセットがあります。」",
+        "comment": "どのようなアプリケーション、プロジェクト、または標準が拡張機能を使用しているかに関わらず、拡張機能の使用には決して汚名が付くわけではありません - それらを使用または定義する機関または管轄区域に関係なく。拡張機能の使用こそが、FHIR仕様を誰にとっても簡単なコアレベルで維持することを可能にします。",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.modifierExtension",
+        "path": "Organization.contact.modifierExtension",
+        "short": "「認識されなくても無視できない拡張機能」(Ninshiki sarenakutemo mushi dekinai kakuchou kinou)",
+        "definition": "「基本的な要素の定義に含まれない追加情報を表すために使用されることがあり、それによって、その要素自体または取り込んでいる要素の子孫の理解を修正する。修飾子要素は通常、否定または修飾を提供します。拡張機能の安全で管理しやすい使用を実現するために、定義および使用に厳しいガバナンスセットが適用されています。どの実装者でも拡張機能を定義できますが、拡張機能の定義の一部として満たす必要がある要件があります。リソースを処理するアプリケーションは、修飾子拡張子をチェックする必要があります。\n\n修飾子拡張機能は、リソースまたはドメインリソースの任意の要素の意味を変更してはなりません（修飾子拡張自体の意味を変更することもできません）。」",
+        "comment": "どのようなアプリケーション、プロジェクト、または標準が拡張機能を使用しているかに関わらず、拡張機能の使用には決して汚名が付くわけではありません - それらを使用または定義する機関または管轄区域に関係なく。拡張機能の使用こそが、FHIR仕様を誰にとっても簡単なコアレベルで維持することを可能にします。",
+        "requirements": "Modifier extensions allow for extensions that *cannot* be safely ignored to be clearly distinguished from the vast majority of extensions which can be safely ignored.  This promotes interoperability by eliminating the need for implementers to prohibit the presence of extensions. For further information, see the [definition of modifier extensions](extensibility.html#modifierExtension).",
+        "alias": [
+          "extensions",
+          "user content",
+          "modifiers"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "BackboneElement.modifierExtension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "「拡張機能または値[x]のいずれかが必要です。両方ではありません。」",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "Modifier extensions are expected to modify the meaning or interpretation of the element that contains them",
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.purpose",
+        "path": "Organization.contact.purpose",
+        "short": "\"接触の種類\" (Sesshoku no shurui)",
+        "definition": "「連絡先に到達できる目的を示しています。」",
+        "requirements": "Need to distinguish between multiple contact persons.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Organization.contact.purpose",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "ContactPartyType"
+            }
+          ],
+          "strength": "extensible",
+          "description": "「連絡を取りたい目的のための連絡先」となります。",
+          "valueSet": "http://hl7.org/fhir/ValueSet/contactentity-type"
+        },
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "./type"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.name",
+        "path": "Organization.contact.name",
+        "short": "\"コンタクトに関連する名前\" (Kontakuto ni kanren suru namae)",
+        "definition": "「連絡関係にある名前」",
+        "requirements": "Need to be able to track the person by name.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Organization.contact.name",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "HumanName",
+            "profile": [
+              "http://jpfhir.jp/fhir/core/StructureDefinition/JP_HumanName"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "PID-5, PID-9"
+          },
+          {
+            "identity": "rim",
+            "map": "./name"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.telecom",
+        "path": "Organization.contact.telecom",
+        "short": "「連絡先詳細（電話、メールなど）連絡先のため」",
+        "definition": "当該のパーティーと連絡を取るための連絡先情報（例：電話番号やメールアドレス）",
+        "requirements": "People have (primary) ways to contact them in some way such as phone, email.",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.contact.telecom",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "ContactPoint"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "PID-13, PID-14"
+          },
+          {
+            "identity": "rim",
+            "map": "./telecom"
+          }
+        ]
+      },
+      {
+        "id": "Organization.contact.address",
+        "path": "Organization.contact.address",
+        "short": "「連絡のための訪問先または郵送先の住所」",
+        "definition": "「連絡先の訪問または郵便送付先」",
+        "requirements": "May need to keep track of a contact party's address for contacting, billing or reporting requirements.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Organization.contact.address",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Address"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "PID-11"
+          },
+          {
+            "identity": "rim",
+            "map": "./addr"
+          }
+        ]
+      },
+      {
+        "id": "Organization.endpoint",
+        "path": "Organization.endpoint",
+        "short": "組織のために運営されているサービスへのアクセスを提供する技術的エンドポイント【詳細参照】",
+        "definition": "組織のために運営されているサービスへのアクセスを提供する技術的エンドポイント",
+        "comment": "参照は、実際のFHIRリソースへの参照である必要があり、内容に辿り着ける（解決できる）必要がある（アクセス制御、一時的な使用不可などを考慮に入れる）。解決は、URLから取得するか、リソースタイプによって該当する場合は、絶対参照を正規URLとして扱い、ローカルレジストリ/リポジトリで検索することによって行うことができる。",
+        "requirements": "組織にはさまざまなサービスを提供する複数のシステムがあり、それらに接続する方法と目的について、技術的な接続の詳細を定義できる必要がある。",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Organization.endpoint",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Endpoint"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素は、@valueまたはchildrenを持っている必要があります。",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      }
+    ]
+  },
+  "differential": {
+    "element": [
+      {
+        "id": "Organization",
+        "path": "Organization",
+        "short": "eCS 診療情報・サマリー汎用 診療科情報の格納に使用する",
+        "definition": "eCS 診療情報・サマリー汎用 診療科情報の格納に使用する"
+      },
+      {
+        "id": "Organization.text",
+        "path": "Organization.text",
+        "short": "本リソースをテキストで表現したものを入れてもよい。"
+      },
+      {
+        "id": "Organization.text.status",
+        "path": "Organization.text.status",
+        "definition": "固定値。テキスト内容の全てがリソースのコンテンツから生成されたことを示す。"
+      },
+      {
+        "id": "Organization.text.div",
+        "path": "Organization.text.div",
+        "definition": "本リソースの構造化情報から生成したテキスト表現をいれてもよい。\\\\r\\\\nXHTML形式。"
+      },
+      {
+        "id": "Organization.name",
+        "path": "Organization.name",
+        "short": "診療科の名称",
+        "definition": "医療文書などに印刷、または画面に表示する際に用いられる診療科の名称。\r\n必ずしも正式名称でなく、略称でも差し支えない。",
+        "min": 1,
+        "mustSupport": true
+      },
+      {
+        "id": "Organization.partOf",
+        "path": "Organization.partOf",
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+            ],
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-hierarchy",
+                "valueBoolean": true
+              }
+            ]
+          }
+        ],
+        "mustSupport": true
+      },
+      {
+        "id": "Organization.partOf.reference",
+        "path": "Organization.partOf.reference",
+        "short": "この診療科が所属する医療機関の情報",
+        "definition": "Bundleリソースに格納される、処方医療機関を表すOrganizationリソースのfullUrl要素に指定されるUUIDを指定や、Containedリソースに格納される相対参照を使用する。",
+        "min": 1,
+        "mustSupport": true
+      }
+    ]
+  }
+}

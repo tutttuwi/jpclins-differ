@@ -1,0 +1,28 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-observation-jlac10-namingsystem",
+  "name": "JP_Observation_JLAC10_CodeSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core Observation JLAC10 NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200119.4.504"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200119.4.504",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_ObservationLabResultCode_CS"
+    },
+    {
+      "type": "uri",
+      "value": "http://medis.or.jp/CodeSystem/master-JLAC10-17digits"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_SpecialCheckup_LaboResult_2102_CS",
+  "id": "jp-SpecialCheckup-LaboResult-2102-CS",
+  "title": "特定検診検査結果　健診定性検査結果コード",
+  "description": "特定検診検査結果　健診定性検査結果コード ",
+  "url": "urn:oid:1.2.392.200119.6.2102",
+  "concept": [
+    {
+      "code": "1",
+      "display": "+"
+    },
+    {
+      "code": "2",
+      "display": "±"
+    },
+    {
+      "code": "3",
+      "display": "1+"
+    },
+    {
+      "code": "4",
+      "display": "2+"
+    },
+    {
+      "code": "5",
+      "display": "3+"
+    }
+  ],
+  "version": "4.0.0",
+  "caseSensitive": false,
+  "experimental": false,
+  "publisher": "厚生労働省",
+  "copyright": "厚生労働省",
+  "count": 5
+}

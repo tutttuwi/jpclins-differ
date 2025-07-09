@@ -1,0 +1,19 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "fragment",
+  "name": "JP_Observation_SubCategory_CS",
+  "id": "jp-observation-subcategory-cs",
+  "title": "感染症関連検査結果として検体検査結果を報告する場合のサブカテゴリで５情報で運用される",
+  "description": "感染症関連検査結果として検体検査結果を報告する場合のサブカテゴリで５情報で運用される",
+  "url": "http://jpfhir.jp/fhir/eCS/CodeSystem/observation-subcategory-cs",
+  "concept": [
+    {
+      "code": "infectionRelated",
+      "display": "感染症関連検査結果"
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "caseSensitive": false
+}

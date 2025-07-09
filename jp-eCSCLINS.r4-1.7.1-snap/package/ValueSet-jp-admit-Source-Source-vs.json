@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_admit_Source_VS",
+  "id": "jp-admit-Source-Source-vs",
+  "title": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  ValueSet",
+  "description": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  ValueSet",
+  "url": "http://jpfhir.jp/fhir/Common/ValueSet/admit-Source",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-01-28",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/Common/CodeSystem/admit-Source"
+      }
+    ]
+  }
+}

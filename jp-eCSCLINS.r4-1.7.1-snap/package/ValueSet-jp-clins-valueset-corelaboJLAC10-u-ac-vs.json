@@ -1,0 +1,30 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_CLINS_ValueSet_CoreLaboJLAC10_u_ac_VS",
+  "id": "jp-clins-valueset-corelaboJLAC10-u-ac-vs",
+  "title": "CLINS: U-A/C ValueSet (JLAC10)",
+  "description": "CLINS 電子カルテ共有サービス用 尿中アルブミン/クレアチニン比 ValueSet (JLAC10)",
+  "url": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_ac_VS",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2022-10-11T21:17:22.426+09:00"
+  },
+  "version": "1.1.0a",
+  "experimental": false,
+  "date": "2024-02-25",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_CS",
+        "filter": [
+          {
+            "property": "concept",
+            "op": "descendent-of",
+            "value": "U-A/C"
+          }
+        ]
+      }
+    ]
+  }
+}

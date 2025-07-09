@@ -1,0 +1,30 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_BundleResourceType_CS",
+  "id": "jp-clins-bundleresourcetype-cs",
+  "title": "Bundleリソースに含まれる５情報リソースタイプ",
+  "description": "CLINSでのBundleリソースに含まれる５情報リソースタイプをmeta要素に記述するためのコードセット",
+  "url": "http://jpfhir.jp/fhir/clins/CodeSystem/BundleResourceType_CS",
+  "concept": [
+    {
+      "code": "AllergyIntolerance"
+    },
+    {
+      "code": "Condition"
+    },
+    {
+      "code": "Observation"
+    },
+    {
+      "code": "MedicationRequest"
+    }
+  ],
+  "version": "1.4.0",
+  "caseSensitive": true,
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "count": 4
+}

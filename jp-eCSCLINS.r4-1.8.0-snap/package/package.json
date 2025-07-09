@@ -1,0 +1,14 @@
+{
+  "name": "jp-eCSCLINS.r4",
+  "version": "1.8.0",
+  "description": "2025-01-07T02:30UTC_jp-eCSCLINS-snapshot 1.8.0",
+  "author": "Kazuhiko Ohe",
+  "fhirVersions": [
+    "4.0.1"
+  ],
+  "dependencies": {
+    "hl7.fhir.r4.core": "4.0.1"
+  },
+  "url": "http://jpfhir.jp/fhir/eCSCLINS",
+  "canonical": "http://jpfhir.jp/fhir/eCSCLINS"
+}

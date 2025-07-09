@@ -1,0 +1,28 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicationmethodjamibasicusage-namingsystem",
+  "name": "JP_MedicationMethodJAMIBasicUsage_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicationMethod JAMI BasicUsage NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200250.2.2.20.30"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200250.2.2.20.30"
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicationMethodJAMIBasicUsage_CS"
+    },
+    {
+      "type": "uri",
+      "value": "http://jami.jp/CodeSystem/MedicationMethodBasicUsage",
+      "preferred": true
+    }
+  ]
+}

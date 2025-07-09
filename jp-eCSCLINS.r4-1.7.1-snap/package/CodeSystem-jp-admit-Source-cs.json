@@ -1,0 +1,41 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_admit_Source_CS",
+  "id": "jp-admit-Source-cs",
+  "title": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査) CodeSystem",
+  "description": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  CodeSystem",
+  "url": "http://jpfhir.jp/fhir/Common/CodeSystem/admit-Source",
+  "concept": [
+    {
+      "code": "0",
+      "display": "院内の他病棟からの転棟"
+    },
+    {
+      "code": "1",
+      "display": "家庭からの入院"
+    },
+    {
+      "code": "4",
+      "display": "他の病院・診療所の病棟からの転院"
+    },
+    {
+      "code": "5",
+      "display": "介護施設・福祉施設に入所中"
+    },
+    {
+      "code": "8",
+      "display": "院内で出生"
+    },
+    {
+      "code": "9",
+      "display": "その他"
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2023-04-18",
+  "caseSensitive": true,
+  "count": 6
+}

@@ -1,0 +1,27 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_practitioner_certificate_category",
+  "id": "jp-codeSystem-practitioner-certificate-category",
+  "title": "JP codeSystem practitioner certificate category",
+  "description": "医療従事者資格種別",
+  "url": "http://jpfhir.jp/fhir/core/CodeSystem/practitioner-certificate-category",
+  "concept": [
+    {
+      "code": "MedicalDoctorLicense",
+      "display": "医師"
+    },
+    {
+      "code": "NarcoticsPractitioner",
+      "display": "麻薬施用者"
+    }
+  ],
+  "version": "1.4.0",
+  "caseSensitive": true,
+  "experimental": false,
+  "date": "2023-04-01T00:00:00+09:00",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "count": 2
+}

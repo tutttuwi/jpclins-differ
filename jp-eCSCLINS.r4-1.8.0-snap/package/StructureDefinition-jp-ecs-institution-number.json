@@ -1,0 +1,706 @@
+{
+  "resourceType": "StructureDefinition",
+  "id": "jp-ecs-institution-number",
+  "language": "ja",
+  "url": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber",
+  "version": "1.8.0",
+  "name": "JP_eCS_InstitutionNumber",
+  "title": "JP eCS InstitutionNumber Extension",
+  "status": "active",
+  "date": "2024-09-14",
+  "publisher": "（一社）日本医療情報学会",
+  "description": "診療サマリーや5情報等に記述する際に、作成発行した医療機関番号を記述する拡張",
+  "purpose": "診療サマリーや5情報等に記述する際に、作成発行した医療機関番号を記述するため。",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "fhirVersion": "4.0.1",
+  "mapping": [
+    {
+      "identity": "rim",
+      "uri": "http://hl7.org/v3",
+      "name": "RIM Mapping"
+    }
+  ],
+  "kind": "complex-type",
+  "abstract": false,
+  "context": [
+    {
+      "type": "element",
+      "expression": "MedicationRequest"
+    },
+    {
+      "type": "element",
+      "expression": "AllergyIntolerance"
+    },
+    {
+      "type": "element",
+      "expression": "Condition"
+    },
+    {
+      "type": "element",
+      "expression": "Patient"
+    },
+    {
+      "type": "element",
+      "expression": "Observation"
+    }
+  ],
+  "type": "Extension",
+  "baseDefinition": "http://hl7.org/fhir/StructureDefinition/Extension",
+  "derivation": "constraint",
+  "snapshot": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "short": "作成発行した医療機関番号を記述するための拡張",
+        "definition": "診療サマリーや5情報等に記述する際に、作成発行した医療機関番号を記述する",
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Extension",
+          "min": 0,
+          "max": "*"
+        },
+        "condition": [
+          "ele-1"
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), 'value')])"
+          },
+          {
+            "key": "valid-value-institutionNumberExtension",
+            "severity": "error",
+            "human": "施設番号　valueIdentifier.value値は、２桁都道府県番号、１桁医療機関区分(1|2|3)、７桁保険医療機関番号の連結１０桁とする。",
+            "expression": "value.ofType(Identifier).value.matches('[0-4][0-9][1-3][0-9]{7}')",
+            "source": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber"
+          }
+        ],
+        "isModifier": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          },
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Extension.id",
+        "path": "Extension.id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Extension.extension",
+        "path": "Extension.extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "0",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "拡張機能の意味を識別します / identifies the meaning of the extension",
+        "definition": "拡張コードの定義のソース - 論理名またはURL。 / Source of the definition for the extension code - a logical name or a URL.",
+        "comment": "定義は、拡張性コードの計算可能または人間が読み取る可能性のある定義を直接指している場合があります。または、他の仕様で宣言されているように、論理的なURIである場合があります。定義は、拡張機能を定義する構造定義のURIでなければなりません。 / The definition may point directly to a computable or human-readable definition of the extensibility codes, or it may be a logical URI as declared in some other specification. The definition SHALL be a URI for the Structure Definition defining the extension.",
+        "min": 1,
+        "max": "1",
+        "base": {
+          "path": "Extension.url",
+          "min": 1,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "uri"
+              }
+            ]
+          }
+        ],
+        "fixedUri": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber",
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "short": "作成発行した医療機関番号を設定する。",
+        "definition": "作成発行した医療機関番号を設定する。",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Extension.value[x]",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "N/A"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].id",
+        "path": "Extension.value[x].id",
+        "representation": [
+          "xmlAttr"
+        ],
+        "short": "要素間参照のための一意のID / Unique id for inter-element referencing",
+        "definition": "リソース内の要素の一意のID（内部参照用）。これは、スペースを含まない文字列値である場合があります。 / Unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Element.id",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "http://hl7.org/fhirpath/System.String",
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/structuredefinition-fhir-type",
+                "valueUrl": "string"
+              }
+            ]
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].extension",
+        "path": "Extension.value[x].extension",
+        "slicing": {
+          "discriminator": [
+            {
+              "type": "value",
+              "path": "url"
+            }
+          ],
+          "description": "Extensions are always sliced by (at least) url",
+          "rules": "open"
+        },
+        "short": "実装で定義された追加のコンテンツ / Additional content defined by implementations",
+        "definition": "要素の基本的な定義の一部ではない追加情報を表すために使用できます。拡張機能を安全で管理しやすくするために、拡張機能の定義と使用に適用される厳格なガバナンスセットがあります。実装者は拡張機能を定義できますが、拡張機能の定義の一部として満たされる一連の要件があります。 / May be used to represent additional information that is not part of the basic definition of the element. To make the use of extensions safe and manageable, there is a strict set of governance  applied to the definition and use of extensions. Though any implementer can define an extension, there is a set of requirements that SHALL be met as part of the definition of the extension.",
+        "comment": "拡張機能を使用または定義する機関や管轄権に関係なく、アプリケーション、プロジェクト、または標準による拡張機能の使用に関連するスティグマはありません。拡張機能の使用は、FHIR仕様がすべての人にコアレベルのシンプルさを保持できるようにするものです。 / There can be no stigma associated with the use of extensions by any application, project, or standard - regardless of the institution or jurisdiction that uses or defines the extensions.  The use of extensions is what allows the FHIR specification to retain a core level of simplicity for everyone.",
+        "alias": [
+          "extensions",
+          "user content"
+        ],
+        "min": 0,
+        "max": "*",
+        "base": {
+          "path": "Element.extension",
+          "min": 0,
+          "max": "*"
+        },
+        "type": [
+          {
+            "code": "Extension"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          },
+          {
+            "key": "ext-1",
+            "severity": "error",
+            "human": "両方ではなく、拡張または値[x]が必要です / Must have either extensions or value[x], not both",
+            "expression": "extension.exists() != value.exists()",
+            "xpath": "exists(f:extension)!=exists(f:*[starts-with(local-name(.), \"value\")])",
+            "source": "http://hl7.org/fhir/StructureDefinition/Extension"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": false,
+        "mapping": [
+          {
+            "identity": "rim",
+            "map": "n/a"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].use",
+        "path": "Extension.value[x].use",
+        "short": "通常|公式|一時的|セカンダリ|古い（知られている場合） / usual | official | temp | secondary | old (If known)",
+        "definition": "このidentifierの目的。 / The purpose of this identifier.",
+        "comment": "アプリケーションは、identifierが一時的なものであると明示的に言っていない限り、永続的であると想定できます。 / Applications can assume that an identifier is permanent unless it explicitly says that it is temporary.",
+        "requirements": "特定の使用のコンテキストが一連のidentifierの中から選択される適切なidentifierを許可します。 / Allows the appropriate identifier for a particular context of use to be selected from among a set of identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.use",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "code"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": true,
+        "isModifierReason": "これは、アプリケーションが一時的なIDを永続的なIDと間違えてはならないため、「IS修飾子」とラベル付けされています。 / This is labeled as \"Is Modifier\" because applications should not mistake a temporary id for a permanent one.",
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierUse"
+            }
+          ],
+          "strength": "required",
+          "description": "既知の場合、このidentifierの目的を識別します。 / Identifies the purpose for this identifier, if known .",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-use|4.0.1"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "N/A"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].type",
+        "path": "Extension.value[x].type",
+        "short": "identifierの説明 / Description of identifier",
+        "definition": "特定の目的に使用するidentifierを決定するために使用できるidentifierのコード化されたタイプ。 / A coded type for the identifier that can be used to determine which identifier to use for a specific purpose.",
+        "comment": "この要素は、identifierの一般的なカテゴリのみを扱います。identifier。システムに対応するコードに使用しないでください。一部のidentifierは、一般的な使用法により複数のカテゴリに分類される場合があります。システムがわかっている場合、タイプは常にシステム定義の一部であるため、タイプは不要です。ただし、システムが不明なidentifierを処理する必要があることがよくあります。多くの異なるシステムが同じタイプを持っているため、タイプとシステムの間に1：1の関係はありません。 / This element deals only with general categories of identifiers.  It SHOULD not be used for codes that correspond 1..1 with the Identifier.system. Some identifiers may fall into multiple categories due to common usage.   Where the system is known, a type is unnecessary because the type is always part of the system definition. However systems often need to handle identifiers where the system is not known. There is not a 1:1 relationship between type and system, since many different systems have the same type.",
+        "requirements": "identifierシステムが不明な場合、ユーザーはidentifierを使用できます。 / Allows users to make use of identifiers when the identifier system is not known.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.type",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "CodeableConcept"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "binding": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-bindingName",
+              "valueString": "IdentifierType"
+            },
+            {
+              "url": "http://hl7.org/fhir/StructureDefinition/elementdefinition-isCommonBinding",
+              "valueBoolean": true
+            }
+          ],
+          "strength": "extensible",
+          "description": "特定の目的に使用するidentifierを決定するために使用できるidentifierのコード化されたタイプ。 / A coded type for an identifier that can be used to determine which identifier to use for a specific purpose.",
+          "valueSet": "http://hl7.org/fhir/ValueSet/identifier-type"
+        },
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.5"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.code or implied by context"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].system",
+        "path": "Extension.value[x].system",
+        "short": "identifier値の名前空間 / The namespace for the identifier value",
+        "definition": "値の名前空間、つまり一意のセット値を記述するURLを確立します。 / Establishes the namespace for the value - that is, a URL that describes a set values that are unique.",
+        "comment": "identifier。システムは常にケースに敏感です。 / Identifier.system is always case sensitive.",
+        "requirements": "identifierのセットがたくさんあります。2つのidentifierを一致させるには、どのセットを扱っているかを知る必要があります。システムは、特定の一意のidentifierセットを識別します。 / There are many sets  of identifiers.  To perform matching of two identifiers, we need to know what set we're dealing with. The system identifies a particular set of unique identifiers.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.system",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "uri"
+          }
+        ],
+        "fixedUri": "http://jpfhir.jp/fhir/core/IdSystem/insurance-medical-institution-no",
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / EI-2-4"
+          },
+          {
+            "identity": "rim",
+            "map": "II.root or Role.id.root"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierType"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].value",
+        "path": "Extension.value[x].value",
+        "short": "一意の値 / The value that is unique",
+        "definition": "通常、identifierの部分はユーザーに関連し、システムのコンテキスト内で一意のユーザーに関連しています。 / The portion of the identifier typically relevant to the user and which is unique within the context of the system.",
+        "comment": "値が完全なURIの場合、システムはurn：ietf：rfc：3986でなければなりません。値の主な目的は、計算マッピングです。その結果、比較目的で正規化される可能性があります（例えば、有意でない白文字、ダッシュなどの削除）ヒューマンディスプレイ用の値は、[レンダリングされた値拡張]（拡張レンダリングValue.html）を使用して伝達できます。identifier。価値は、identifierの知識を使用しない限り、ケースに敏感なものとして扱われます。システムにより、プロセッサーは、非セイズに固有の処理が安全であると確信できます。 / If the value is a full URI, then the system SHALL be urn:ietf:rfc:3986.  The value's primary purpose is computational mapping.  As a result, it may be normalized for comparison purposes (e.g. removing non-significant whitespace, dashes, etc.)  A value formatted for human display can be conveyed using the [Rendered Value extension](extension-rendered-value.html). Identifier.value is to be treated as case sensitive unless knowledge of the Identifier.system allows the processer to be confident that non-case-sensitive processing is safe.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.value",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "string"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.1 / EI.1"
+          },
+          {
+            "identity": "rim",
+            "map": "II.extension or II.root if system indicates OID or GUID (Or Role.id.extension or root)"
+          },
+          {
+            "identity": "servd",
+            "map": "./Value"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].period",
+        "path": "Extension.value[x].period",
+        "short": "IDが使用に有効だった時間期間 / Time period when id is/was valid for use",
+        "definition": "identifierが使用される/有効な期間。 / Time period during which identifier is/was valid for use.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.period",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Period"
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.7 + CX.8"
+          },
+          {
+            "identity": "rim",
+            "map": "Role.effectiveTime or implied by context"
+          },
+          {
+            "identity": "servd",
+            "map": "./StartDate and ./EndDate"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].assigner",
+        "path": "Extension.value[x].assigner",
+        "short": "IDを発行した組織（単なるテキストである可能性があります） / Organization that issued id (may be just text)",
+        "definition": "identifierを発行/管理する組織。 / Organization that issued/manages the identifier.",
+        "comment": "identifierは、.reference要素を省略し、割り当て組織に関する名前またはその他のテキスト情報を反映した.display要素のみを含む場合があります。 / The Identifier.assigner may omit the .reference element and only contain a .display element reflecting the name or other textual information about the assigning organization.",
+        "min": 0,
+        "max": "1",
+        "base": {
+          "path": "Identifier.assigner",
+          "min": 0,
+          "max": "1"
+        },
+        "type": [
+          {
+            "code": "Reference",
+            "targetProfile": [
+              "http://hl7.org/fhir/StructureDefinition/Organization"
+            ]
+          }
+        ],
+        "constraint": [
+          {
+            "key": "ele-1",
+            "severity": "error",
+            "human": "すべてのFHIR要素には、@valueまたは子要素が必要です / All FHIR elements must have a @value or children",
+            "expression": "hasValue() or (children().count() > id.count())",
+            "xpath": "@value|f:*|h:div",
+            "source": "http://hl7.org/fhir/StructureDefinition/Element"
+          }
+        ],
+        "isModifier": false,
+        "isSummary": true,
+        "mapping": [
+          {
+            "identity": "v2",
+            "map": "CX.4 / (CX.4,CX.9,CX.10)"
+          },
+          {
+            "identity": "rim",
+            "map": "II.assigningAuthorityName but note that this is an improper use by the definition of the field.  Also Role.scoper"
+          },
+          {
+            "identity": "servd",
+            "map": "./IdentifierIssuingAuthority"
+          }
+        ]
+      }
+    ]
+  },
+  "differential": {
+    "element": [
+      {
+        "id": "Extension",
+        "path": "Extension",
+        "short": "作成発行した医療機関番号を記述するための拡張",
+        "definition": "診療サマリーや5情報等に記述する際に、作成発行した医療機関番号を記述する",
+        "constraint": [
+          {
+            "key": "valid-value-institutionNumberExtension",
+            "severity": "error",
+            "human": "施設番号　valueIdentifier.value値は、２桁都道府県番号、１桁医療機関区分(1|2|3)、７桁保険医療機関番号の連結１０桁とする。",
+            "expression": "value.ofType(Identifier).value.matches('[0-4][0-9][1-3][0-9]{7}')",
+            "source": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber"
+          }
+        ]
+      },
+      {
+        "id": "Extension.extension",
+        "path": "Extension.extension",
+        "max": "0"
+      },
+      {
+        "id": "Extension.url",
+        "path": "Extension.url",
+        "fixedUri": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber"
+      },
+      {
+        "id": "Extension.value[x]",
+        "path": "Extension.value[x]",
+        "short": "作成発行した医療機関番号を設定する。",
+        "definition": "作成発行した医療機関番号を設定する。",
+        "type": [
+          {
+            "code": "Identifier"
+          }
+        ]
+      },
+      {
+        "id": "Extension.value[x].system",
+        "path": "Extension.value[x].system",
+        "fixedUri": "http://jpfhir.jp/fhir/core/IdSystem/insurance-medical-institution-no"
+      }
+    ]
+  }
+}

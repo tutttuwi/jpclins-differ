@@ -1,0 +1,31 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_ePrescription_section",
+  "id": "jp-codeSystem-ePrescription-section",
+  "title": "JP codeSystem ePrescription section",
+  "description": "処方セクション区分コード",
+  "url": "http://jpfhir.jp/fhir/ePrescription/CodeSystem/prescription-section",
+  "concept": [
+    {
+      "code": "01",
+      "display": "処方情報セクション"
+    },
+    {
+      "code": "11",
+      "display": "分割処方箋セクション"
+    },
+    {
+      "code": "12",
+      "display": "別紙セクション"
+    }
+  ],
+  "version": "1.4.0",
+  "caseSensitive": true,
+  "experimental": false,
+  "date": "2023-04-01T00:00:00+09:00",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "count": 3
+}

@@ -1,0 +1,44 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_dischargeDisposition",
+  "id": "jp-codeSystem-dischargeDisposition",
+  "description": "退院時転帰コード情報（出典：厚労省DPC導入影響評価調査）CodeSystem",
+  "url": "http://jpfhir.jp/fhir/Common/CodeSystem/discharge-disposition",
+  "concept": [
+    {
+      "code": "1",
+      "display": "傷病が治癒・軽快"
+    },
+    {
+      "code": "3",
+      "display": "傷病（白血病、潰瘍性大腸炎、クローン病等）が寛解"
+    },
+    {
+      "code": "4",
+      "display": "傷病が不変"
+    },
+    {
+      "code": "5",
+      "display": "傷病が増悪"
+    },
+    {
+      "code": "6",
+      "display": "傷病による死亡"
+    },
+    {
+      "code": "7",
+      "display": "傷病以外による死亡"
+    },
+    {
+      "code": "9",
+      "display": "その他（検査入院,正常分娩及び人間ドック含む）"
+    }
+  ],
+  "title": "退院時転帰コード情報（出典：厚労省DPC導入影響評価調査） CodeSystem",
+  "version": "1.0.0",
+  "experimental": false,
+  "caseSensitive": false,
+  "count": 7
+}

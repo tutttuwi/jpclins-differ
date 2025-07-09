@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_eCS_MedicationCode_Nocoded_VS",
+  "id": "jp-ecs-medicationcode-nocoded-vs",
+  "title": "医薬品未標準化コード項目　valueSet",
+  "description": "医薬品コードで標準コードが割り当てられない場合に使用する未コード化コードだけのValueSet",
+  "url": "http://jpfhir.jp/fhir/eCS/CodeSystem/MedicationCodeNocoded_VS",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/eCS/CodeSystem/MedicationCodeNocoded_CS"
+      }
+    ]
+  }
+}

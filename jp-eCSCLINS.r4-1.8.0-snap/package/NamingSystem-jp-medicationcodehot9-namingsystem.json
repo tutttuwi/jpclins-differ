@@ -1,0 +1,36 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicationcodehot9-namingsystem",
+  "name": "JP_MedicationCodeHOT9_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicationCode HOT9 NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200119.4.403.1"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200119.4.403.1",
+      "preferred": true
+    },
+    {
+      "type": "oid",
+      "value": "1.2.392.100495.20.2.74"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.100495.20.2.74"
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicationCodeHOT9_CS"
+    },
+    {
+      "type": "uri",
+      "value": "http://medis.or.jp/CodeSystem/master-HOT9"
+    }
+  ]
+}

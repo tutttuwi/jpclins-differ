@@ -1,0 +1,145 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "supplement",
+  "name": "JP_ex_diagnosistyp_display",
+  "id": "jp-ex-diagnosistyp-display",
+  "title": "http://terminology.hl7.org/CodeSystem/ex-diagnosistypeに日本語displayを追加",
+  "description": "http://terminology.hl7.org/CodeSystem/ex-diagnosistypeに日本語displayを追加",
+  "url": "http://jpfhir.jp/core/terminology/CodeSystemJPDisplay/ex-diagnosistype",
+  "version": "1.4.0",
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "supplements": "http://terminology.hl7.org/CodeSystem/ex-diagnosistype",
+  "concept": [
+    {
+      "code": "principal",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "主診断"
+        },
+        {
+          "language": "ja",
+          "value": "主病名"
+        }
+      ]
+    },
+    {
+      "code": "admitting",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "入院時診断"
+        }
+      ]
+    },
+    {
+      "code": "clinical",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "臨床診断"
+        }
+      ]
+    },
+    {
+      "code": "differential",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "鑑別診断"
+        }
+      ]
+    },
+    {
+      "code": "discharge",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "退院時病名"
+        },
+        {
+          "language": "ja",
+          "value": "退院時診断"
+        }
+      ]
+    },
+    {
+      "code": "laboratory",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "検査診断"
+        }
+      ]
+    },
+    {
+      "code": "nursing",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "看護診断"
+        }
+      ]
+    },
+    {
+      "code": "prenatal",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "出生前診断"
+        }
+      ]
+    },
+    {
+      "code": "radiology",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "放射線画像診断"
+        },
+        {
+          "language": "ja",
+          "value": "画像診断"
+        }
+      ]
+    },
+    {
+      "code": "remote",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "遠隔診断"
+        }
+      ]
+    },
+    {
+      "code": "retrospective",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "振り返り診断"
+        },
+        {
+          "language": "ja",
+          "value": "考察診断"
+        }
+      ]
+    },
+    {
+      "code": "self",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "自己診断"
+        },
+        {
+          "language": "ja",
+          "value": "患者診断"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_dischargeDisposition_VS",
+  "id": "jp-dischargeDisposition-vs",
+  "title": "退院時転帰コード情報　(出典：厚労省DPC導入影響評価調査) ValueSet",
+  "description": "退院時転帰コード情報　(出典：厚労省DPC導入影響評価調査) ValueSet",
+  "url": "http://jpfhir.jp/fhir/Common/ValueSet/discharge-disposition",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-10",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/Common/CodeSystem/discharge-disposition"
+      }
+    ]
+  }
+}

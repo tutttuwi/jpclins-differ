@@ -1,0 +1,28 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicationcodehot7-namingsystem",
+  "name": "JP_MedicationCodeHOT7_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicationCode HOT7 NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200119.4.403.2"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200119.4.403.2",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicationCodeHOT7_CS"
+    },
+    {
+      "type": "uri",
+      "value": "http://medis.or.jp/CodeSystem/master-HOT7"
+    }
+  ]
+}

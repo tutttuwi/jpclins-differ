@@ -1,0 +1,20 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_ObsLabResult_LocalUncoded_CS",
+  "id": "jp-clins-obslabresult-localuncoded-cs",
+  "title": "未標準化コード項目(Local)",
+  "description": "検体検査結果項目で標準コードが割り当てられない場合に使用する未コード化コード(Local)",
+  "url": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ObservationLabResultLocalUncoded_CS",
+  "concept": [
+    {
+      "code": "LUNCODED",
+      "display": "Locally Uncoded"
+    }
+  ],
+  "version": "1.4.0",
+  "experimental": false,
+  "caseSensitive": false,
+  "count": 1
+}

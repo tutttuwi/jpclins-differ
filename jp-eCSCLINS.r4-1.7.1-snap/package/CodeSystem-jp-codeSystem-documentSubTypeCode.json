@@ -1,0 +1,52 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_documentSubTypeCode",
+  "id": "jp-codeSystem-documentSubTypeCode",
+  "description": "FHIR文書の文書サブ区分（医療文書全般）",
+  "url": "http://jpfhir.jp/fhir/Common/CodeSystem/doc-subtypecodes",
+  "concept": [
+    {
+      "code": "ADMISSION",
+      "display": "入院時文書",
+      "definition": "入院時の作成文書"
+    },
+    {
+      "code": "SECONDOP",
+      "display": "セカンドオピニオン文書",
+      "definition": "セカンドオピニオン目的の作成文書"
+    },
+    {
+      "code": "EXAMIN",
+      "display": "要精査依頼文書",
+      "definition": "健診・検診後の精密検査依頼の文書"
+    },
+    {
+      "code": "CONSULT",
+      "display": "他科コンサルト",
+      "definition": "入院中の同一医療機関内の他科への依頼文書"
+    },
+    {
+      "code": "DISCHARGE",
+      "display": "退院時文書",
+      "definition": "退院時の作成文書"
+    },
+    {
+      "code": "INPATIENT",
+      "display": "入院中文書",
+      "definition": "退院時以外の入院中作成文書"
+    },
+    {
+      "code": "OUTPATIENT",
+      "display": "外来文書",
+      "definition": "外来診療中の作成文書"
+    }
+  ],
+  "title": "FHIR文書の文書サブ区分（医療文書全般）",
+  "experimental": false,
+  "caseSensitive": false,
+  "date": "2024-07-10T00:00:00+09:00",
+  "version": "1.0",
+  "count": 7
+}

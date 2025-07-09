@@ -1,0 +1,24 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-microbiology-infectious-agent-ns",
+  "name": "JP_Microbiology_InfectiousAgent_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "微生物学的検査感染性物質コード(Ver.6.2)\n本コードは厚生労働省院内感染対策サーベイランス事業(https://janis.mhlw.go.jp/)で作成されているマスタを編集・加工して利用している",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.100495.10.3.100.5.27.6.1"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.100495.10.3.100.5.27.6.1",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_Microbiology_InfectiousAgent_CS"
+    }
+  ]
+}

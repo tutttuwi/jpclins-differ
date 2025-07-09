@@ -1,0 +1,207 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_CLINS_document_section",
+  "id": "jp-codeSystem-clins-document-section",
+  "description": "電子カルテ情報共有サービス文書共通セクション区分コード",
+  "url": "http://jpfhir.jp/fhir/clins/CodeSystem/document-section",
+  "concept": [
+    {
+      "code": "COMMON",
+      "concept": [
+        {
+          "code": "200",
+          "display": "CDA参照セクション"
+        },
+        {
+          "code": "210",
+          "display": "添付情報セクション"
+        },
+        {
+          "code": "230",
+          "display": "PDFセクション"
+        },
+        {
+          "code": "300",
+          "display": "構造情報セクション"
+        },
+        {
+          "code": "360",
+          "display": "現病歴セクション"
+        },
+        {
+          "code": "370",
+          "display": "既往歴セクション"
+        },
+        {
+          "code": "410",
+          "display": "事前指示セクション"
+        },
+        {
+          "code": "510",
+          "display": "アレルギー・不耐性反応セクション"
+        },
+        {
+          "code": "530",
+          "display": "予防接種歴セクション"
+        },
+        {
+          "code": "550",
+          "display": "家族歴セクション"
+        },
+        {
+          "code": "640",
+          "display": "社会歴・生活習慣セクション"
+        },
+        {
+          "code": "810",
+          "display": "医療機器セクション"
+        },
+        {
+          "code": "830",
+          "display": "臨床研究参加セクション"
+        }
+      ]
+    },
+    {
+      "code": "DIS",
+      "concept": [
+        {
+          "code": "312",
+          "display": "入院理由セクション"
+        },
+        {
+          "code": "322",
+          "display": "入院時詳細セクション"
+        },
+        {
+          "code": "324",
+          "display": "退院時詳細セクション"
+        },
+        {
+          "code": "333",
+          "display": "入院中経過セクション"
+        },
+        {
+          "code": "342",
+          "display": "入院時診断セクション"
+        },
+        {
+          "code": "344",
+          "display": "退院時診断セクション"
+        },
+        {
+          "code": "352",
+          "display": "主訴セクション"
+        },
+        {
+          "code": "424",
+          "display": "退院時方針指示セクション"
+        },
+        {
+          "code": "432",
+          "display": "入院時服薬セクション"
+        },
+        {
+          "code": "444",
+          "display": "退院時投薬指示セクション"
+        },
+        {
+          "code": "612",
+          "display": "入院時身体所見セクション"
+        },
+        {
+          "code": "614",
+          "display": "退院時身体所見セクション"
+        },
+        {
+          "code": "623",
+          "display": "入院中検査結果セクション"
+        },
+        {
+          "code": "713",
+          "display": "入院中治療セクション"
+        }
+      ]
+    },
+    {
+      "code": "REF",
+      "concept": [
+        {
+          "code": "220",
+          "display": "備考・連絡情報セクション"
+        },
+        {
+          "code": "330",
+          "display": "臨床経過セクション"
+        },
+        {
+          "code": "340",
+          "display": "傷病名・主訴セクション"
+        },
+        {
+          "code": "420",
+          "display": "診療方針指示セクション"
+        },
+        {
+          "code": "430",
+          "display": "投薬指示セクション"
+        },
+        {
+          "code": "520",
+          "display": "感染症情報セクション"
+        },
+        {
+          "code": "610",
+          "display": "身体所見セクション"
+        },
+        {
+          "code": "620",
+          "display": "検査結果セクション"
+        },
+        {
+          "code": "720",
+          "display": "処置セクション"
+        },
+        {
+          "code": "730",
+          "display": "手術セクション"
+        },
+        {
+          "code": "740",
+          "display": "輸血歴セクション"
+        },
+        {
+          "code": "910",
+          "display": "紹介先情報セクション"
+        },
+        {
+          "code": "920",
+          "display": "紹介元情報セクション"
+        },
+        {
+          "code": "950",
+          "display": "紹介目的セクション"
+        }
+      ]
+    },
+    {
+      "code": "PCS",
+      "concept": [
+        {
+          "code": "422",
+          "display": "計画サマリーセクション"
+        }
+      ]
+    }
+  ],
+  "title": "電子カルテ情報共有サービス文書共通セクション区分コード",
+  "version": "1.4.0",
+  "caseSensitive": true,
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "hierarchyMeaning": "is-a",
+  "count": 46
+}

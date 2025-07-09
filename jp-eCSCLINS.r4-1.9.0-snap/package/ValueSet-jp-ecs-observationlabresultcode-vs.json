@@ -1,0 +1,36 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_eCS_ObservationLabResultCode_VS",
+  "id": "jp-ecs-observationlabresultcode-vs",
+  "title": "eCS Observation Lab Result Code Value Set",
+  "description": "eCS 検体検査結果で使用することが可能な ValueSet",
+  "url": "http://jpfhir.jp/fhir/eCS/ValueSet/JP_eCS_ObservationLabResultCode_VS",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_CS"
+      },
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_CS"
+      },
+      {
+        "system": "http://medis.or.jp/CodeSystem/master-JLAC10-17digits"
+      },
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_CLINS_ObsLabResult_Uncoded_CS",
+        "concept": [
+          {
+            "code": "99999999999999999",
+            "display": "未標準化コード項目(JLAC)"
+          }
+        ]
+      }
+    ]
+  }
+}

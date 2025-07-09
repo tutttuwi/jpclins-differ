@@ -1,0 +1,24 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-endoscopyterminology-codes-jed-ns",
+  "name": "JP_Endoscopy_TerminologyCodes_JED_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "日本消化器内視鏡学会が推進するJED (Japan Endoscopy Database) Projectで定義されるコード",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.200270.4.1000.1"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.200270.4.1000.1",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_EndoscopyTerminologyCodesJED_CS"
+    }
+  ]
+}

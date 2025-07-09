@@ -1,0 +1,4488 @@
+{
+  "resourceType": "ImplementationGuide",
+  "id": "clinical-information-sharing",
+  "url": "http://jpfhir.jp/fhir/clins/ImplementationGuide/clinical-information-sharing",
+  "version": "1.10.0",
+  "name": "JP_CLINS_FHIR_IG",
+  "title": "電子カルテ情報共有サービス2文書５情報+患者サマリー　FHIR実装ガイド JP-CLINS（CLinical Information Sharing ImplementationGuide） v1.10.0",
+  "status": "active",
+  "date": "2025-01-29",
+  "publisher": "管理：（一社）日本医療情報学会.",
+  "contact": [
+    {
+      "name": "管理：（一社）日本医療情報学会.",
+      "telecom": [
+        {
+          "system": "url",
+          "value": "https://jami.jp"
+        },
+        {
+          "system": "email",
+          "value": "office@jami.jp"
+        }
+      ]
+    }
+  ],
+  "description": "電子カルテ情報共有サービス2文書５情報+患者サマリー　FHIR実装ガイド JP-CLINS ImplementationGuide v1.10.0",
+  "jurisdiction": [
+    {
+      "coding": [
+        {
+          "code": "JP",
+          "system": "urn:iso:std:iso:3166-2"
+        }
+      ]
+    }
+  ],
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0 （クリエイティブ・コモンズ 表示-改変禁止 4.0 国際 パブリック・ライセンス）",
+  "packageId": "clinical-information-sharing",
+  "fhirVersion": [
+    "4.0.1"
+  ],
+  "dependsOn": [
+    {
+      "packageId": "jp-core.r4",
+      "uri": "http://jpfhir.jp/fhir/core/1.1.2/ImplementationGuide/",
+      "version": "1.1.2-clins",
+      "id": "jp_core_r4"
+    },
+    {
+      "packageId": "jpfhir-terminology.r4",
+      "uri": "http://jpfhir.jp/fhir/jpfhir-terminology.r4/ImplementationGuide/",
+      "version": "1.3.0",
+      "id": "jpfhir_terminology_r4"
+    }
+  ],
+  "definition": {
+    "resource": [
+      {
+        "reference": {
+          "reference": "Bundle/Bundle-CLINS-Observations-Example-01"
+        },
+        "name": "Bundle-CLINS-Observations-Example-01",
+        "description": "■ 検体検査結果3件　Bundleリソース(CLINS送信用)　#01",
+        "exampleCanonical": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_CLINS"
+      },
+      {
+        "reference": {
+          "reference": "Bundle/Bundle-CLINS-PCS-Example-01"
+        },
+        "name": "Bundle-CLINS-PCS-Example-01",
+        "description": "■ 患者療養計画サマリー　Bundleリソース(CLINS送信用)　#01",
+        "exampleCanonical": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_ePCS"
+      },
+      {
+        "reference": {
+          "reference": "Bundle/Bundle-CLINS-Referral-Example-01"
+        },
+        "name": "Bundle-CLINS-Referral-Example-01",
+        "description": "■ 診療情報提供書　Bundleリソース(CLINS送信用)　#01",
+        "exampleCanonical": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_eReferral"
+      },
+      {
+        "reference": {
+          "reference": "Bundle/Bundle-CLINS-Referral-NoEntry-Example-01"
+        },
+        "name": "Bundle-CLINS-Referral-NoEntry-Example-01",
+        "description": "■ 診療情報提供書　Bundleリソース(CLINS送信用)　#02 必須のヘッダ情報以外はentry記述をせず、テキストだけを各セクションに記述した例。",
+        "exampleCanonical": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_eReferral"
+      },
+      {
+        "reference": {
+          "reference": "Bundle/Bundle-CLINS-Referral-NoEntry-Example-01-RefText"
+        },
+        "name": "Bundle-CLINS-Referral-NoEntry-Example-01-RefText",
+        "description": "■ 診療情報提供書　Bundleリソース(CLINS送信用)　#02 必須のヘッダ情報以外はentry記述をせず、テキストだけを各セクションに記述し、臨床経過だけはDocumentReferenceにテキストを記述してentryで参照している例。",
+        "exampleCanonical": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_eReferral"
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-bundleresourcetype-cs"
+        },
+        "name": "Bundleリソースに含まれる５情報リソースタイプ",
+        "description": "CLINSでのBundleリソースに含まれる５情報リソースタイプをmeta要素に記述するためのコードセット",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/JP-valueSet-carePlanCategory"
+        },
+        "name": "CarePlan カテゴリー",
+        "description": "CarePlan カテゴリー　hospital-plan または discharge-plan",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-properties-cunit-cs"
+        },
+        "name": "CLINS 検体検査コードシステム属性コードシステム UNIT",
+        "description": "CLINS 検体検査コードシステム属性コードシステム UNIT",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-JLAC10-infectionlabo-cs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:JLAC10感染症検査項目セット",
+        "description": "CLINS 電子カルテ共有サービス用 JLAC10感染症検査項目セット",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-JLAC10-corelabo-cs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:JLAC10検体検査項目セット",
+        "description": "CLINS 電子カルテ共有サービス用 JLAC10検体検査項目セット",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-JLAC11-infectionlabo-cs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:JLAC11感染症検査項目セット",
+        "description": "CLINS 電子カルテ共有サービス用 JLAC11感染症検査項目セット",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-JLAC11-corelabo-cs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:JLAC11検体検査項目セット",
+        "description": "CLINS 電子カルテ共有サービス用 JLAC11検体検査項目セット",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10  HBs抗原(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10  HBs抗原(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagod-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10  HBs抗原(吸光度)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10  HBs抗原(吸光度)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvabresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10  HCV抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10  HCV抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv2abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10  HIV-2抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10  HIV-2抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsabresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsabquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗体(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗体(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsabdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗原(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗原(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗原(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗原(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗原(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗原(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hbsagposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HBs抗原(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HBs抗原(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvabcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV抗体(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV抗体(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvabdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvabposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV抗体(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV抗体(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvagresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV抗原検査(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV抗原検査(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvagquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV抗原検査(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV抗原検査(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvnresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV核酸増幅検査(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10HCV核酸増幅検査(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hcvnquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HCV核酸増幅検査(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HCV核酸増幅検査(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1quant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1(ウイルスRNA定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1(ウイルスRNA定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1result-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1(ウイルスRNA定量判定)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1(ウイルスRNA定量判定)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abp24coi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abod-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(吸光度)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(吸光度)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-HIV1P2ABP24RESULT-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1p2abp24quant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-HIV1P2ABP24POSCOI-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1+2抗体・p24抗原(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv1abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-1抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-1抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-hiv2abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 HIV-2抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 HIV-2抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-stsqlresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒STS(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒STS(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-stsquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒STS(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒STS(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-tphquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒TP抗体(半定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒TP抗体(半定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-tpresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒TP抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒TP抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-tpquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒TP抗体(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒TP抗体(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC10-tpposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC10 梅毒TP抗体(定量、陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC10 梅毒TP抗体(定量、陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11  HBs抗原(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11  HBs抗原(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagod-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11  HBs抗原(吸光度)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11  HBs抗原(吸光度)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvabresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11  HCV抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11  HCV抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv2abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11  HIV-2抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11  HIV-2抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsabresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsabquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗体(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗体(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsabdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗原(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗原(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗原(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗原(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗原(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗原(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hbsagposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HBs抗原(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HBs抗原(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvabcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV抗体(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV抗体(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvabdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvabposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV抗体(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV抗体(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvagresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV抗原検査(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV抗原検査(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvagquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV抗原検査(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV抗原検査(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvnresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV核酸増幅検査(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11HCV核酸増幅検査(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hcvnquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HCV核酸増幅検査(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HCV核酸増幅検査(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1quant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1(ウイルスRNA定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1(ウイルスRNA定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1result-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1(ウイルスRNA定量判定)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1(ウイルスRNA定量判定)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abp24coi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abod-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(吸光度)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(吸光度)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-HIV1P2ABP24RESULT-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1p2abp24quant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-HIV1P2ABP24POSCOI-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1abresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv1abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-hiv2abdil-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-2抗体(希釈倍率)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-2抗体(希釈倍率)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-stsqlresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒STS(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒STS(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-stsquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒STS(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒STS(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-tphquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒TP抗体(半定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒TP抗体(半定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-tpresult-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒TP抗体(定性)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒TP抗体(定性)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-tpquant-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒TP抗体(定量)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒TP抗体(定量)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-infectionlaboJLAC11-tpposcoi-vs"
+        },
+        "name": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 梅毒TP抗体(定量、陽性コントロール比)",
+        "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 梅毒TP抗体(定量、陽性コントロール比)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-abo-bld-vs"
+        },
+        "name": "CLINS: ABO-BLD ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血液型(ABO) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-abo-bld-vs"
+        },
+        "name": "CLINS: ABO-BLD ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血液型(ABO) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-alb-vs"
+        },
+        "name": "CLINS: ALB ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 アルブミン JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-alb-vs"
+        },
+        "name": "CLINS: ALB ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 アルブミン JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-alp-vs"
+        },
+        "name": "CLINS: ALP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 アルカリホスファターゼ JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-alp-vs"
+        },
+        "name": "CLINS: ALP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 アルカリホスファターゼ JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-alt-vs"
+        },
+        "name": "CLINS: ALT ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 ALT(GPT) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-alt-vs"
+        },
+        "name": "CLINS: ALT ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 ALT(GPT) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-amy-vs"
+        },
+        "name": "CLINS: AMY ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 アミラ－ゼ JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-amy-vs"
+        },
+        "name": "CLINS: AMY ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 アミラ－ゼ JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-aptt-vs"
+        },
+        "name": "CLINS: APTT ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 活性化部分トロンボプラスチン時間 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-aptt-vs"
+        },
+        "name": "CLINS: APTT ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 活性化部分トロンボプラスチン時間 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ast-vs"
+        },
+        "name": "CLINS: AST ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 AST(GOT) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ast-vs"
+        },
+        "name": "CLINS: AST ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 AST(GOT) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-bg-vs"
+        },
+        "name": "CLINS: BG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 グルコース(血糖) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-bg-vs"
+        },
+        "name": "CLINS: BG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 グルコース(血糖) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-bnp-vs"
+        },
+        "name": "CLINS: BNP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 脳性Na利尿ペプチド ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-bnp-vs"
+        },
+        "name": "CLINS: BNP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 脳性Na利尿ペプチド ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-bun-vs"
+        },
+        "name": "CLINS: BUN ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿素窒素(BUN) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-bun-vs"
+        },
+        "name": "CLINS: BUN ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿素窒素(BUN) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ca-vs"
+        },
+        "name": "CLINS: Ca ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 カルシウム JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ca-vs"
+        },
+        "name": "CLINS: Ca ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 カルシウム JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-cbg-vs"
+        },
+        "name": "CLINS: CBG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 随時血糖 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-cbg-vs"
+        },
+        "name": "CLINS: CBG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 随時血糖 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-che-vs"
+        },
+        "name": "CLINS: ChE ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 コリンエステラーゼ JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-che-vs"
+        },
+        "name": "CLINS: ChE ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 コリンエステラーゼ JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ck-vs"
+        },
+        "name": "CLINS: CK ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 クレアチンキナーゼ JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ck-vs"
+        },
+        "name": "CLINS: CK ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 クレアチンキナーゼ JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-cl-vs"
+        },
+        "name": "CLINS: Cl ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 クロール JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-cl-vs"
+        },
+        "name": "CLINS: Cl ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 クロール JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-vs"
+        },
+        "name": "CLINS: CoreLabo43items ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 43検査項目 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-vs"
+        },
+        "name": "CLINS: CoreLabo43items ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 43検査項目 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-cre-vs"
+        },
+        "name": "CLINS: Cre ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 クレアチニン JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-cre-vs"
+        },
+        "name": "CLINS: Cre ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 クレアチニン JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-crp-vs"
+        },
+        "name": "CLINS: CRP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 Ｃ反応性蛋白 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-crp-vs"
+        },
+        "name": "CLINS: CRP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 Ｃ反応性蛋白 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-crp-class-vs"
+        },
+        "name": "CLINS: CRP-class ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 Ｃ反応性蛋白判定 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-crp-class-vs"
+        },
+        "name": "CLINS: CRP-class ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 Ｃ反応性蛋白判定 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-cys-c-vs"
+        },
+        "name": "CLINS: Cys-C ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 シスタチンC JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-cys-c-vs"
+        },
+        "name": "CLINS: Cys-C ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 シスタチンC JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-d-bil-vs"
+        },
+        "name": "CLINS: D-Bil ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 直接ビリルビン JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-d-bil-vs"
+        },
+        "name": "CLINS: D-Bil ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 直接ビリルビン JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-dd-vs"
+        },
+        "name": "CLINS: DD ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 Dダイマー定量 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-dd-vs"
+        },
+        "name": "CLINS: DD ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 Dダイマー定量 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-dd-class-vs"
+        },
+        "name": "CLINS: DD ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 Dダイマー定性 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-dd-class-vs"
+        },
+        "name": "CLINS: DD-class ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 Dダイマー定性 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-fbg-vs"
+        },
+        "name": "CLINS: FBG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 空腹時血糖 JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-fbg-vs"
+        },
+        "name": "CLINS: FBG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 空腹時血糖 JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ggt-vs"
+        },
+        "name": "CLINS: GGT ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 γ-GTPJLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ggt-vs"
+        },
+        "name": "CLINS: GGT ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 γ-GTPJLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-hb-vs"
+        },
+        "name": "CLINS: Hb ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-ヘモグロビン ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-hb-vs"
+        },
+        "name": "CLINS: Hb ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-ヘモグロビン ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-hba1cngsp-vs"
+        },
+        "name": "CLINS: HbA1c-NGSP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 HbA1c(NGSP) ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-hba1cngsp-vs"
+        },
+        "name": "CLINS: HbA1c-NGSP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 HbA1c(NGSP) ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-hdl-c-vs"
+        },
+        "name": "CLINS: HDL-C ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 HDL-コレステロール ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-hdl-c-vs"
+        },
+        "name": "CLINS: HDL-C ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 HDL-コレステロール ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-k-vs"
+        },
+        "name": "CLINS: K ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 カリウム JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-k-vs"
+        },
+        "name": "CLINS: K ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 カリウム JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ld-vs"
+        },
+        "name": "CLINS: LD ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 LD(LDH) ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ld-vs"
+        },
+        "name": "CLINS: LD ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 LD(LDH) ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ldl-c-vs"
+        },
+        "name": "CLINS: LDL-C ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 LDL-コレステロール ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ldl-c-vs"
+        },
+        "name": "CLINS: LDL-C ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 LDL-コレステロール ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-na-vs"
+        },
+        "name": "CLINS: Na ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 ナトリウム ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-na-vs"
+        },
+        "name": "CLINS: Na ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 ナトリウム ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-nt-probnp-vs"
+        },
+        "name": "CLINS: NT-proBNP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 ヒト脳性Na利尿ペプチド前駆体Ｎ端フラグメント JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-nt-probnp-vs"
+        },
+        "name": "CLINS: NT-proBNP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 ヒト脳性Na利尿ペプチド前駆体Ｎ端フラグメント JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-hplt-vs"
+        },
+        "name": "CLINS: PLT ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-血小板数 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-hplt-vs"
+        },
+        "name": "CLINS: PLT ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-血小板数 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-pt-act-vs"
+        },
+        "name": "CLINS: PT-act ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビンACT ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-pt-act-vs"
+        },
+        "name": "CLINS: PT-act ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビンACT ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-pt-inr-vs"
+        },
+        "name": "CLINS: PT-INR ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビンINR ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-pt-inr-vs"
+        },
+        "name": "CLINS: PT-INR ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビンINR ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-pt-ratio-vs"
+        },
+        "name": "CLINS: PT-ratio ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビン比 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-pt-ratio-vs"
+        },
+        "name": "CLINS: PT-ratio ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビン比 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-pt-sec-vs"
+        },
+        "name": "CLINS: PT-sec ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビン時間 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-pt-sec-vs"
+        },
+        "name": "CLINS: PT-sec ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 プロトロンビン時間 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-rbc-vs"
+        },
+        "name": "CLINS: RBC ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-赤血球数 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-rbc-vs"
+        },
+        "name": "CLINS: RBC ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-赤血球数 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-rh-bld-vs"
+        },
+        "name": "CLINS: Rh-BLD ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血液型(Rh) JLAC10 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-rh-bld-vs"
+        },
+        "name": "CLINS: Rh-BLD ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血液型(Rh) JLAC11 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-t-bil-vs"
+        },
+        "name": "CLINS: T-Bil ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 総ビリルビン ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-t-bil-vs"
+        },
+        "name": "CLINS: T-Bil ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 総ビリルビン ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-t-cho-vs"
+        },
+        "name": "CLINS: T-CHO ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 総コレステロール ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-t-cho-vs"
+        },
+        "name": "CLINS: T-CHO ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 総コレステロール ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-tg-vs"
+        },
+        "name": "CLINS: TG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 中性脂肪 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-tg-vs"
+        },
+        "name": "CLINS: TG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 中性脂肪 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-tp-vs"
+        },
+        "name": "CLINS: TP ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 総蛋白 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-tp-vs"
+        },
+        "name": "CLINS: TP ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 総蛋白 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-ac-vs"
+        },
+        "name": "CLINS: U-A/C ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿中アルブミン/クレアチニン比 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-ac-vs"
+        },
+        "name": "CLINS: U-A/C ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿中アルブミン/クレアチニン比 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-bld-vs"
+        },
+        "name": "CLINS: U-Bld ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿潜血(定性) ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-bld-vs"
+        },
+        "name": "CLINS: U-Bld ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿潜血(定性) ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-bld-halfqty-vs"
+        },
+        "name": "CLINS: U-Bld-半定量 ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用  尿潜血(半定量、希釈倍率)  ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-bld-halfqty-vs"
+        },
+        "name": "CLINS: U-Bld-半定量 ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用  尿潜血(半定量、希釈倍率)  ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-glu-vs"
+        },
+        "name": "CLINS: U-Glu 尿糖(定性)ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿糖(定性)ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-glu-vs"
+        },
+        "name": "CLINS: U-Glu 尿糖(定性)ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿糖(定性)ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-glu-halfqty-vs"
+        },
+        "name": "CLINS: U-Glu-HalfQty 尿糖(半定量) 　ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿糖(半定量) 　ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-glu-halfqty-vs"
+        },
+        "name": "CLINS: U-Glu-HalfQty 尿糖(半定量) 　ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿糖(半定量) 　ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-u-pc-vs"
+        },
+        "name": "CLINS: U-P/C ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿中蛋白/クレアチニン比 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-u-pc-vs"
+        },
+        "name": "CLINS: U-P/C ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿中蛋白/クレアチニン比 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-utp-vs"
+        },
+        "name": "CLINS: U-TP 尿蛋⽩(定性)ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿蛋⽩(定性) ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-utp-vs"
+        },
+        "name": "CLINS: U-TP 尿蛋⽩(定性)ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿蛋⽩(定性) ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-utp-halfqty-vs"
+        },
+        "name": "CLINS: U-TP-半定量 ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿蛋⽩(半定量) ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-utp-halfqty-vs"
+        },
+        "name": "CLINS: U-TP-半定量 ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿蛋⽩(半定量) ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ua-vs"
+        },
+        "name": "CLINS: UA ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 尿酸 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ua-vs"
+        },
+        "name": "CLINS: UA ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 尿酸 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-wbc-vs"
+        },
+        "name": "CLINS: WBC ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-白血球数 ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-wbc-vs"
+        },
+        "name": "CLINS: WBC ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 血算-白血球数 ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ctg-vs"
+        },
+        "name": "CLINS: 随時中性脂肪CTG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 随時中性脂肪CTG ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ctg-vs"
+        },
+        "name": "CLINS: 随時中性脂肪CTG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 随時中性脂肪CTG ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC10-ftg-vs"
+        },
+        "name": "CLINS:　空腹時中性脂肪FTG ValueSet (JLAC10)",
+        "description": "CLINS 電子カルテ共有サービス用 空腹時中性脂肪FTG ValueSet (JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-valueset-corelaboJLAC11-ftg-vs"
+        },
+        "name": "CLINS:　空腹時中性脂肪FTG ValueSet (JLAC11)",
+        "description": "CLINS 電子カルテ共有サービス用 空腹時中性脂肪FTG ValueSet (JLAC11)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Bundle-CLINS"
+        },
+        "name": "CLINS電子カルテ情報共有サービス用:JP_Bundle_CLINS",
+        "description": "CLINS 電子カルテ情報共有サービスへの5情報送信用 Bundleリソース プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-ecs-observationlabresultcode-vs"
+        },
+        "name": "eCS Observation Lab Result Code Value Set",
+        "description": "eCS 検体検査結果で使用することが可能な ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "Observation/ErrorExample-ObsLabo-eGFR"
+        },
+        "name": "ErrorExample-ObsLabo-eGFR",
+        "description": "【意図的エラー例】：検体検査結果　eGFR　75.0 ml/min/1.73m2 　　【ローカルコードなし】 一般項目JLACコードJLAC10=8A065000002391901 検体：血清",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Encounter/Example-Contained-JP-Encounter-AMB"
+        },
+        "name": "Example-Contained-JP-Encounter-AMB",
+        "description": "埋め込み　Encounterリソース（外来受診）データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Encounter/Example-Contained-JP-Encounter-IMP"
+        },
+        "name": "Example-Contained-JP-Encounter-IMP",
+        "description": "Encounterリソース（入院） データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-Contained-JP-Practitioner-minimun-D001"
+        },
+        "name": "Example-Contained-JP-Practitioner-minimun-D001",
+        "description": "埋め込み　Practitionerリソース　医療者D001  データ作成例",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-Contained-JP-Practitioner-minimun-D002"
+        },
+        "name": "Example-Contained-JP-Practitioner-minimun-D002",
+        "description": "埋め込み　Practitionerリソース　医療者D002  データ作成例",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-Contained-JP-Practitioner-minimun-D003"
+        },
+        "name": "Example-Contained-JP-Practitioner-minimun-D003",
+        "description": "埋め込み　Practitionerリソース　医療者D003  データ作成例",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-Contained-JP-Practitioner-minimun-R001"
+        },
+        "name": "Example-Contained-JP-Practitioner-minimun-R001",
+        "description": "埋め込み　Practitionerリソース　医療者R001  データ作成例",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Specimen/Example-Contained-JP-Specimen-Serum"
+        },
+        "name": "Example-Contained-JP-Specimen-Serum",
+        "description": "埋め込み　Specimemリソース　検体検査材料　血清",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Specimen/Example-Contained-JP-Specimen-Urine"
+        },
+        "name": "Example-Contained-JP-Specimen-Urine",
+        "description": "埋め込み　Specimemリソース　検体検査材料　尿(含むその他)",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "AllergyIntolerance/Example-JP-Allergy-eCS-01"
+        },
+        "name": "Example-JP-Allergy-eCS-01",
+        "description": "AllergyIntoleranceリソース　（診療情報提供書　アレルギー　サバ）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "reference": {
+          "reference": "AllergyIntolerance/Example-JP-Allergy-eCS-02"
+        },
+        "name": "Example-JP-Allergy-eCS-02",
+        "description": "AllergyIntoleranceリソース　（診療情報提供書　アレルギー　キーウイ）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "reference": {
+          "reference": "AllergyIntolerance/Example-JP-AllergyIntolerance-eCS-01"
+        },
+        "name": "Example-JP-AllergyIntolerance-eCS-01",
+        "description": "AllergyIntoleranceリソース CLINS必須要素のみ 長期保存 データ作成例(サバアレルギー)",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "reference": {
+          "reference": "AllergyIntolerance/Example-JP-AllergyIntolerance-eCS-02"
+        },
+        "name": "Example-JP-AllergyIntolerance-eCS-02",
+        "description": "AllergyIntoleranceリソース CLINS必須要素と推奨要素とプラスアルファを記述 長期保存 データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "reference": {
+          "reference": "AllergyIntolerance/Example-JP-AllergyIntolerance-eCS-03"
+        },
+        "name": "Example-JP-AllergyIntolerance-eCS-03",
+        "description": "AllergyIntoleranceリソース　CLINS必須要素で記述した薬剤アレルギー等情報　長期保存 データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-01"
+        },
+        "name": "Example-JP-Condition-eCS-01",
+        "description": "Conditionリソース 必須要素だけの データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-02"
+        },
+        "name": "Example-JP-Condition-eCS-02",
+        "description": "Conditionリソース 必須要素と推奨要素を記述した データ作成例、主病名、未告知、長期保存、病名管理コードとICD10分類の両方でコーディング",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-03"
+        },
+        "name": "Example-JP-Condition-eCS-03",
+        "description": "Conditionリソース 必須要素と推奨要素を記述した データ作成例、病名交換コードでコーディング、疑い病名で終了",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-ABDPAIN"
+        },
+        "name": "Example-JP-Condition-eCS-ABDPAIN",
+        "description": "Conditionリソース　（診療情報提供書　既往歴テキスト　上腹部痛）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-ANGINA"
+        },
+        "name": "Example-JP-Condition-eCS-ANGINA",
+        "description": "Conditionリソース　（診療情報提供書　既往歴テキスト　狭心症）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-cc1-Referral01"
+        },
+        "name": "Example-JP-Condition-eCS-cc1-Referral01",
+        "description": "Conditionリソース　（診療情報提供書　主訴テキスト　上腹部痛）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-cc2-Referral01"
+        },
+        "name": "Example-JP-Condition-eCS-cc2-Referral01",
+        "description": "Conditionリソース　（診療情報提供書　主訴テキスト　腰痛）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Condition/Example-JP-Condition-eCS-Fx"
+        },
+        "name": "Example-JP-Condition-eCS-Fx",
+        "description": "Conditionリソース　（診療情報提供書　既往歴テキスト　左前腕骨折）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "reference": {
+          "reference": "DocumentReference/Example-JP-DocRef-eCS-cccourseRef01-onlyDescription"
+        },
+        "name": "Example-JP-DocRef-eCS-cccourseRef01-onlyDescription",
+        "description": "DocumentReferenceリソース　（診療情報提供書　臨床経過をdescriptionのみでstring記述）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_DocumentReference_eCS"
+      },
+      {
+        "reference": {
+          "reference": "DocumentReference/Example-JP-DocRef-eCS-clinical-ccourse-Referral01"
+        },
+        "name": "Example-JP-DocRef-eCS-clinical-ccourse-Referral01",
+        "description": "DocumentReferenceリソース　（診療情報提供書　臨床経過）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_DocumentReference_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Encounter/Example-JP-Encounter-eCS-01"
+        },
+        "name": "Example-JP-Encounter-eCS-01",
+        "description": "Encounterリソース 必須要素だけの最低限の入院外来区分情報 データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Encounter/Example-JP-Encounter-eCS-AMB-01"
+        },
+        "name": "Example-JP-Encounter-eCS-AMB-01",
+        "description": "Encounterリソース　（診療情報提供書　外来受診）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Encounter/Example-JP-Encounter-eCS-purpose-Referral01"
+        },
+        "name": "Example-JP-Encounter-eCS-purpose-Referral01",
+        "description": "Encounterリソース　（診療情報提供書　紹介目的テキスト）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-eCS-fukintouByDay"
+        },
+        "name": "Example-JP-MedReq-eCS-fukintouByDay",
+        "description": "MedicationRequestリソース　（診療情報提供書　内服　不均等投与1日用法）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-ExtAnus-AsNeeded-Total1"
+        },
+        "name": "Example-JP-MedReq-ExtAnus-AsNeeded-Total1",
+        "description": "MedicationRequestリソース　入院・外用(坐剤)頓用全量処方　頓用と1回量をコードで記述できない例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-ExtEye-Total1"
+        },
+        "name": "Example-JP-MedReq-ExtEye-Total1",
+        "description": "【注意喚起例】：薬剤を標準コードで記述していない、入院処方　外用（点眼）全量処方　1回量をコードで記述できない例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-ExtSkin-Total2"
+        },
+        "name": "Example-JP-MedReq-ExtSkin-Total2",
+        "description": "【注意喚起例】：入院処方　外用（塗布）全量処方　1回量をコードで記述できない例. ただし医薬品コードを「標準コード（YJまたは規格別成分コード）」で記述していないために電子カルテ情報共有サービスに送信する場合にはエラー（警告）になる例。",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-4timez-7days"
+        },
+        "name": "Example-JP-MedReq-PO-4timez-7days",
+        "description": "MedicationRequestリソース　入院・内服処方1日4回7日分　例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-AsNeeded-LimitMax"
+        },
+        "name": "Example-JP-MedReq-PO-AsNeeded-LimitMax",
+        "description": "MedicationRequestリソース　入院・内服処方頓用発熱時　1回量記述なし、4回分処方例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-BID-10days-AsNeeded"
+        },
+        "name": "Example-JP-MedReq-PO-BID-10days-AsNeeded",
+        "description": "MedicationRequestリソース　入院・内服処方1日1回１回2錠（投与指示あり） 2日分処方例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-BID-2d"
+        },
+        "name": "Example-JP-MedReq-PO-BID-2d",
+        "description": "MedicationRequestリソース　入院・内服処方1日1回１回2錠 2日分処方例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-Fumin-AsNeeded-4"
+        },
+        "name": "Example-JP-MedReq-PO-Fumin-asNeeded-4",
+        "description": "MedicationRequestリソース　入院・内服頓用　頓用と1回量をコードで記述する例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-SID-28days"
+        },
+        "name": "Example-JP-MedReq-PO-SID-28days",
+        "description": "退院時処方　薬剤コード＝YJコード　内服1日1回１回1錠 標準用法フルコード化28日分処方例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-SID-90-AMB"
+        },
+        "name": "Example-JP-MedReq-PO-SID-90-AMB",
+        "description": "外来院外処方　内服1日1回１回1錠 標準用法フルコード化90日分処方例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-TID-2days"
+        },
+        "name": "Example-JP-MedReq-PO-TID-2days",
+        "description": "外来院外処方　内服1日1回１回1錠 標準用法コード化90日分処方例　（発行診療科、オーダ番号記載あり）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-PO-TID-2days-dummyUsageCode"
+        },
+        "name": "Example-JP-MedReq-PO-TID-2days-dummyUsageCode",
+        "description": "外来院外処方　内服1日1回１回1錠 標準用法コード化90日分処方例　（発行診療科、オーダ番号記載あり） 用法をダミーコード",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "MedicationRequest/Example-JP-MedReq-TID-01"
+        },
+        "name": "Example-JP-MedReq-TID-01",
+        "description": "MedicationRequestリソース　（診療情報提供書　内服　処方）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-Common-eCS-PS-textOnly01"
+        },
+        "name": "Example-JP-Obs-Common-eCS-PS-textOnly01",
+        "description": "Observationリソース　（診療情報提供書　腹部所見テキスト）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_Common_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-Alb"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-Alb",
+        "description": "Observationリソース（検体検査結果）アルブミン　3.9　mg/L　　ローカルコード=0000181800 臨床検査項目基本コードJLAC10=3A015000001827101 検体：血清(埋込みリソース）　診療科：循環器診療科",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-eGFR"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-eGFR",
+        "description": "Observationリソース（検体検査結果）eGFR　75.0 ml/min/1.73m2 　　ローカルコード=0000181910 一般項目JLACコードJLAC10=8A065000002391901 検体：血清",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-HbsAg"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-HbsAg",
+        "description": "Observationリソース（検体検査結果）HBs抗原(定性)　臨床検査項目基本コードJLAC10=5F016141002306311 検体：血清(埋込みリソース）　診療科：循環器診療科　長期保存フラグ設定（感染症検査には有効）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-BG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-BG",
+        "description": "Observationリソース（検体検査結果）BG 血糖(定量)　3D010000002327101　102 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-BLDABO"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-BLDABO",
+        "description": "Observationリソース（検体検査結果）血液型-ABO　5H010000001910114　3：ＡＢ",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-CBG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-CBG",
+        "description": "Observationリソース（検体検査結果）CBG 随時血糖　3D010129902327101　112 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-DD"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-DD",
+        "description": "Observationリソース（検体検査結果）Dダイマー(定量)　2B140000002205201　112 μg/mL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-DD-class"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-DD-class",
+        "description": "Observationリソース（検体検査結果）Dダイマー(定性)　2B140000002211711　1:陽性",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-FBG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-FBG",
+        "description": "Observationリソース（検体検査結果）FBG 空腹時血糖　3D010130002327101　88 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC10-PTAct"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC10-PTAct",
+        "description": "Observationリソース（検体検査結果）プロトロンビン時間(PT-活性)　2B030000002231153　98%",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-BG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-BG",
+        "description": "Observationリソース（検体検査結果）BG 血糖(定量) C4001000025000185 102 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-CBG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-CBG",
+        "description": "Observationリソース（検体検査結果）CBG 随時血糖　C4001133625000185　112 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-DD"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-DD",
+        "description": "Observationリソース（検体検査結果）Dダイマー(定量)　B20190000240001H6　112 μg/mL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-DD-class"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-DD-class",
+        "description": "Observationリソース（検体検査結果）Dダイマー(定性)　B2019000024003102　1:陽性",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-FBG"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-FBG",
+        "description": "Observationリソース（検体検査結果）FBG 空腹時血糖 C4001133725000185 88 mg/dL",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-JLAC11-PTAct"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-JLAC11-PTAct",
+        "description": "Observationリソース（検体検査結果）プロトロンビン時間(PT-活性)　B2006000324000112　98%",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Observation/Example-JP-Obs-LabResult-eCS-K"
+        },
+        "name": "Example-JP-Obs-LabResult-eCS-K",
+        "description": "Observationリソース（検体検査結果）カリウム　5.5 mmol/L (High)　　ローカルコード=0000181802 臨床検査項目基本コードJLAC10=3H015000002326101 検体：血清　診療科：循環器診療科",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Organization/Example-JP-Org-eCS-Inst-Referral01"
+        },
+        "name": "Example-JP-Org-eCS-Inst-Referral01",
+        "description": "Organizationリソース　（診療情報提供書　紹介元　医療機関情報）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Organization/Example-JP-Org-eCS-InstWithDepartment"
+        },
+        "name": "Example-JP-Org-eCS-InstWithDepartment",
+        "description": "医療機関情報　診療科情報を拡張に含む　例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Organization/Example-JP-Org-eCS-ReferralTo01"
+        },
+        "name": "Example-JP-Org-eCS-ReferralTo01",
+        "description": "Organizationリソース　（診療情報提供書　紹介先　医療機関情報情報）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Patient/Example-JP-Patient-eCS-01-Contained"
+        },
+        "name": "Example-JP-Patient-eCS-01-Contained",
+        "description": "Patientリソース　（患者情報）01  データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Patient_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Patient/Example-Patient2"
+        },
+        "name": "Example-JP-Patient-eCS-02-Contained",
+        "description": "Patientリソース　（患者情報）02",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Patient_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Patient/Example-JP-Patient-eCS-MAKINO"
+        },
+        "name": "Example-JP-Patient-eCS-MAKINO",
+        "description": "Patientリソース　（患者情報）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Patient_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Patient/Example-JP-Patient-minimun"
+        },
+        "name": "Example-JP-Patient-minimun",
+        "description": "Patientリソース　（患者情報）最小限  データ作成例 (CLINS要件を満たさないバージョン)",
+        "exampleBoolean": true
+      },
+      {
+        "reference": {
+          "reference": "Patient/Example-JP-Patient-standard"
+        },
+        "name": "Example-JP-Patient-standard",
+        "description": "Patientリソース　標準的記述 データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Patient_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-JP-Practitioner-eCS-PCS-Author"
+        },
+        "name": "Example-JP-Practitioner-eCS-PCS-Author",
+        "description": "医師情報　例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-JP-Practitioner-eCS-ReferralFrom01"
+        },
+        "name": "Example-JP-Practitioner-eCS-ReferralFrom01",
+        "description": "Practitionerリソース　（診療情報提供書　紹介元　医師情報）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-JP-Practitioner-eCS-ReferralFrom02"
+        },
+        "name": "Example-JP-Practitioner-eCS-ReferralFrom02",
+        "description": "Practitionerリソース　（診療情報提供書　紹介元　医師情報）氏名テキストのみ。",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-JP-Practitioner-eCS-ReferralTo01"
+        },
+        "name": "Example-JP-Practitioner-eCS-ReferralTo01",
+        "description": "Practitionerリソース　（診療情報提供書　紹介先　医師情報）",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "reference": {
+          "reference": "Practitioner/Example-JP-Practitioner-eCS-ReferralTo02"
+        },
+        "name": "Example-JP-Practitioner-eCS-ReferralTo02",
+        "description": "Practitionerリソース　（診療情報提供書　紹介先　医師情報）氏名テキストのみ。",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-documentSubTypeCode"
+        },
+        "name": "FHIR文書の文書サブ区分（医療文書全般）",
+        "description": "FHIR文書の文書サブ区分（医療文書全般）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-valueSet-documentSubTypeCode"
+        },
+        "name": "FHIR文書の文書サブ区分（医療文書）",
+        "description": "FHIR文書の文書サブ区分（医療文書全般）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-documentTypeCode"
+        },
+        "name": "FHIR文書の文書区分（医療文書全般）",
+        "description": "FHIR文書の文書区分（医療文書全般）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-valueSet-documentTypeCode"
+        },
+        "name": "FHIR文書の文書区分（医療文書）",
+        "description": "FHIR文書の文書区分（医療文書全般）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-ex-diagnosistyp-display"
+        },
+        "name": "http://terminology.hl7.org/CodeSystem/ex-diagnosistypeに日本語displayを追加",
+        "description": "http://terminology.hl7.org/CodeSystem/ex-diagnosistypeに日本語displayを追加",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-v3ActCod-display"
+        },
+        "name": "http://terminology.hl7.org/CodeSystem/v3-ActCodeに日本語displayを追加",
+        "description": "http://terminology.hl7.org/CodeSystem/v3-ActCodeに日本語displayを追加",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-ePrescription-section"
+        },
+        "name": "JP codeSystem ePrescription section",
+        "description": "処方セクション区分コード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-practitioner-certificate-category"
+        },
+        "name": "JP codeSystem practitioner certificate category",
+        "description": "医療従事者資格種別",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-prescription-category"
+        },
+        "name": "JP codeSystem prescription category",
+        "description": "処方箋区分コード　（01:一般処方箋、02:麻薬処方箋、03:分割一般処方）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-condition-disease-postfix-modifier"
+        },
+        "name": "JP Core Disease Postfix Modifier Extension",
+        "description": "病名の後置修飾語を格納するための拡張",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-condition-disease-prefix-modifier"
+        },
+        "name": "JP Core Disease Prefix Modifier Extension",
+        "description": "病名の前置修飾語を格納するための拡張",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-simpleobservationcategory-cs"
+        },
+        "name": "JP Core Simple Observation Category CodeSystem",
+        "description": "JP Coreにて定義したObservationリソースに関する分類コード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-ecs-department"
+        },
+        "name": "JP eCS Department Extension",
+        "description": "診療サマリーや5情報等に記述する際に、発行診療科または発行者の診療科情報を記述する拡張",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-ecs-diagnosisType"
+        },
+        "name": "JP eCS Disgnostic Type Extension",
+        "description": "傷病名情報に主たる診療対象病名か、あるいはそれ以外の情報をタイプかを付与する拡張",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-ecs-institution-number"
+        },
+        "name": "JP eCS InstitutionNumber Extension",
+        "description": "診療サマリーや5情報等に記述する際に、作成発行した医療機関番号を記述する拡張",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-department-ssmix-namingsystem"
+        },
+        "name": "jp-department-ssmix-namingsystem",
+        "description": "JP Core Department SsMix NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-endoscopyterminology-codes-jed-ns"
+        },
+        "name": "jp-endoscopyterminology-codes-jed-ns",
+        "description": "日本消化器内視鏡学会が推進するJED (Japan Endoscopy Database) Projectで定義されるコード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicalfeescoretype-namingsystem"
+        },
+        "name": "jp-medicalfeescoretype-namingsystem",
+        "description": "JP Core MedicalFeeScoreType NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationbodysitejamiexternal-namingsystem"
+        },
+        "name": "jp-medicationbodysitejamiexternal-namingsystem",
+        "description": "JP Core Medication BodySite JAMI External NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationcodecommon-namingsystem"
+        },
+        "name": "jp-medicationcodecommon-namingsystem",
+        "description": "JP Core MedicationCode Common NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationcodehot13-namingsystem"
+        },
+        "name": "jp-medicationcodehot13-namingsystem",
+        "description": "JP Core MedicationCode HOT13 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationcodehot7-namingsystem"
+        },
+        "name": "jp-medicationcodehot7-namingsystem",
+        "description": "JP Core MedicationCode HOT7 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationcodehot9-namingsystem"
+        },
+        "name": "jp-medicationcodehot9-namingsystem",
+        "description": "JP Core MedicationCode HOT9 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationcodeyj-namingsystem"
+        },
+        "name": "jp-medicationcodeyj-namingsystem",
+        "description": "JP Core MedicationCode YJ NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationingredientstrengthstrengthtype-namingsystem"
+        },
+        "name": "jp-medicationingredientstrengthstrengthtype-namingsystem",
+        "description": "JP Core Medication IngredientStrength StrengthType NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationmethodjamibasicusage-namingsystem"
+        },
+        "name": "jp-medicationmethodjamibasicusage-namingsystem",
+        "description": "JP Core MedicationMethod JAMI BasicUsage NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationmethodjamidetailusage-namingsystem"
+        },
+        "name": "jp-medicationmethodjamidetailusage-namingsystem",
+        "description": "JP Core MedicationMethod JAMI DetailUsage NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationroute-hl7-0162-namingsystem"
+        },
+        "name": "jp-medicationroute-hl7-0162-namingsystem",
+        "description": "JP MedicationRouteHL7 0162 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationsubstitutionnotallowedreason-namingsystem"
+        },
+        "name": "jp-medicationsubstitutionnotallowedreason-namingsystem",
+        "description": "JP Core MedicationSubstitution NotAllowedReason NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationunitmerit9-namingsystem"
+        },
+        "name": "jp-medicationunitmerit9-namingsystem",
+        "description": "JP Core MedicationUnit MERIT9 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationusagejami-namingsystem"
+        },
+        "name": "jp-medicationusagejami-namingsystem",
+        "description": "JP MedicationUsage JAMI NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-medicationusagejamiadditional-namingsystem"
+        },
+        "name": "jp-medicationusagejamiadditional-namingsystem",
+        "description": "JP Core MedicationUsage JAMI Additional NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-microbiology-antimicrobialdrug-ns"
+        },
+        "name": "jp-microbiology-antimicrobialdrug-ns",
+        "description": "微生物学的検査抗菌薬コード(Ver.5.2) \n本コードは厚生労働省院内感染対策サーベイランス事業(https://janis.mhlw.go.jp/)で作成されているマスタを編集・加工して利用している",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-microbiology-infectious-agent-ns"
+        },
+        "name": "jp-microbiology-infectious-agent-ns",
+        "description": "微生物学的検査感染性物質コード(Ver.6.2)\n本コードは厚生労働省院内感染対策サーベイランス事業(https://janis.mhlw.go.jp/)で作成されているマスタを編集・加工して利用している",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-observation-jlac10-namingsystem"
+        },
+        "name": "jp-observation-jlac10-namingsystem",
+        "description": "JP Core Observation JLAC10 NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-observation-vitalsignscode-namingsystem"
+        },
+        "name": "jp-observation-vitalsignscode-namingsystem",
+        "description": "JP Core Observation VitalSigns Code NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/jp-prefecturenumber-namingsystem"
+        },
+        "name": "jp-prefecturenumber-namingsystem",
+        "description": "JP Core PrefectureNumber NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-AllergyIntolerance-eCS"
+        },
+        "name": "JP_AllergyIntolerance_eCS",
+        "description": "AllergyIntoleranceリソース（アレルギー情報／薬剤アレルギー等）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Binary"
+        },
+        "name": "JP_Binary",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Bundle"
+        },
+        "name": "JP_Bundle",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Bundle-eDischargeSummary"
+        },
+        "name": "JP_Bundle_eDischargeSummary",
+        "description": "退院時サマリー Bundle",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Bundle-ePCS"
+        },
+        "name": "JP_Bundle_ePCS",
+        "description": "療養計画患者サマリー Bundle",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Bundle-eReferral"
+        },
+        "name": "JP_Bundle_eReferral",
+        "description": "診療情報提供書 Bundle",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-CarePlan-eCS"
+        },
+        "name": "JP_CarePlan_eCS",
+        "description": "eCS 診療情報・サマリー汎用 CarePlan",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-CarePlan-ePCS"
+        },
+        "name": "JP_CarePlan_ePCS",
+        "description": "療養計画患者サマリー専用のCarePlan",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-resultclass-bldABO-cs"
+        },
+        "name": "JP_CLINS ABO血液型の検査結果コード表 1：A、2：B、3：AB、4：O",
+        "description": "JP_CLINS ABO血液型の検査結果コード表　1：A、2：B、3：AB、4：O コードは半角、コード表示名は全角文字または半角文字",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-resultclass-bldRh-cs"
+        },
+        "name": "JP_CLINS Rh血液型の検査結果コード表1：＋、2：－",
+        "description": "JP_CLINS Rh血液型の検査結果コード表　1：＋、2：－ コードは半角、コード表示名は全角文字または半角文字",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-resultclass-posneghold-cs"
+        },
+        "name": "JP_CLINS 判定定性検査結果コード表 1：陽性、2：陰性",
+        "description": "JP_CLINS 判定定性検査結果　1:陽性、2:陰性、3:判定保留 コードは半角、コード表示名は全角文字",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-codesystem-resultclass-urincode-cs"
+        },
+        "name": "JP_CLINS 尿関係の定性検査結果コード表 1：－、2：±、3：＋、4：2＋、5：3＋、6：4＋、7：5＋",
+        "description": "JP_CLINS 尿関係の定性検査結果　1：－、2：±、3：＋、4：２＋、5：３＋、6：４＋、7：５＋ コードは半角、コード表示名は全角文字",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Composition-eDischargeSummary"
+        },
+        "name": "JP_Composition_eDischargeSummary",
+        "description": "退院時サマリーのリソース構成情報と文書日付に関するCompositionの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Composition-ePCS"
+        },
+        "name": "JP_Composition_ePCS",
+        "description": "患者療養計画サマリーのリソース構成情報と文書日付に関するCompositionの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Composition-eReferral"
+        },
+        "name": "JP_Composition_eReferral",
+        "description": "診療情報提供書情報のリソース構成情報と文書日付に関するCompositionの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Condition-eCS"
+        },
+        "name": "JP_Condition_eCS",
+        "description": "Conditionリソース（傷病名情報）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Consent"
+        },
+        "name": "JP_Consent",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Consent-eCS"
+        },
+        "name": "JP_Consent_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Coverage-eCS-insurance"
+        },
+        "name": "JP_Coverage_eCS_insurance",
+        "description": "保険情報　Coverageリソースプロファイル　JP_Coverageの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Coverage-eCS-publicPayment"
+        },
+        "name": "JP_Coverage_eCS_publicPayment",
+        "description": "公費負担情報　JP_Coverageの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Device"
+        },
+        "name": "JP_Device",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-DeviceUseStatement"
+        },
+        "name": "JP_DeviceUseStatement",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-DeviceUseStatement-eCS"
+        },
+        "name": "JP_DeviceUseStatement_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Device-eCS"
+        },
+        "name": "JP_Device_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-DocumentReference-CDAdocument"
+        },
+        "name": "JP_DocumentReference_CDAdocument",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-DocumentReference-eCS"
+        },
+        "name": "JP_DocumentReference_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Encounter-eCS"
+        },
+        "name": "JP_Encounter-eCS",
+        "description": "Encounterリソース（受診時・入院時等のEncounter情報）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-FamilyMemberHistory-eCS"
+        },
+        "name": "JP_FamilyMemberHistory_eCS",
+        "description": "eCS 診療情報・サマリー汎用 FamilyMemberHistory",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Immunization-eCS"
+        },
+        "name": "JP_Immunization_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-MedicationRequest-eCS"
+        },
+        "name": "JP_MedicationRequest_eCS",
+        "description": "診療情報・サマリー汎用 MedicationRequestリソース（処方オーダの１処方薬情報）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-medicationdosage-eCS"
+        },
+        "name": "JP_MedicationRequest_eCS Dosageデータタイプ",
+        "description": "診療情報・サマリー汎用 JP_MedicationRequest_eCS のdosageInstruction要素で使用するDosageデータタイプ",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Observation-Common-eCS"
+        },
+        "name": "JP_Observation_Common_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Observation-LabResult-eCS"
+        },
+        "name": "JP_Observation_LabResult_eCS",
+        "description": "診療情報・サマリー汎用 Observationリソース（検体検査結果／感染症検体検査結果）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Organization-eCS"
+        },
+        "name": "JP_Organization_eCS",
+        "description": "eCS/CLNS 診療情報・サマリー汎用　Organizationリソース（医療機関等の組織・機関情報）プロファイル　（JP_Organizationの派生プロファイル）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Organization-eCS-coveragePayer"
+        },
+        "name": "JP_Organization_eCS_coveragePayer",
+        "description": "処方など医療サービスに適用される保険の保険者または公費の公費受給者　JP_Organizationの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Organization-eCS-department"
+        },
+        "name": "JP_Organization_eCS_department",
+        "description": "eCS 診療情報・サマリー汎用 　Organizationリソース（診療科情報）プロファイル　（JP_Organizationの派生プロファイル）",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Patient-eCS"
+        },
+        "name": "JP_Patient_eCS",
+        "description": "Patientリソース（患者情報）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-PractitionerRole-eCS-author"
+        },
+        "name": "JP_PractitionerRole_eCS_author",
+        "description": "処方を発行した医療者の資格情報　JP_PractitionerRole の派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Practitioner-eCS"
+        },
+        "name": "JP_Practitioner_eCS",
+        "description": "診療情報・サマリー汎用 Practitionerリソース（医療者情報）プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Practitioner-eCSauthor"
+        },
+        "name": "JP_Practitioner_eCS_author",
+        "description": "処方を作成した医師情報　JP_Practitionerの派生プロファイル",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-Procedure-eCS"
+        },
+        "name": "JP_Procedure_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-RelatedPerson"
+        },
+        "name": "JP_RelatedPerson",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-RelatedPerson-eCS"
+        },
+        "name": "JP_RelatedPerson_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-ResearchStudy"
+        },
+        "name": "JP_ResearchStudy",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-ResearchStudy-"
+        },
+        "name": "JP_ResearchStudy_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-ResearchSubject"
+        },
+        "name": "JP_ResearchSubject",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-ResearchSubject-eCS"
+        },
+        "name": "JP_ResearchSubject_eCS",
+        "description": "Derived Profile from JP-Core",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/JP-ServiceRequest"
+        },
+        "name": "JP_ServiceRequest",
+        "description": "JP-ServiceRequest　プロファイル = JP-ServiceRequest　Commonプロファイル(JP-Core V1.2系)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "StructureDefinition/jp-servicerequest-common"
+        },
+        "name": "JP_ServiceRequest_Common",
+        "description": "JP-ServiceRequest　Commonプロファイル(JP-Core V1.2系)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "NamingSystem/mhlw-icd10-namingsystem"
+        },
+        "name": "mhlw-icd10-namingsystem",
+        "description": "JP Core for MHLW ICD10-2013 full digits NamingSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-careplancategory-cs"
+        },
+        "name": "ケアプランのタイプコード",
+        "description": "ケアプランのタイプコード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-admit-Source-Source-vs"
+        },
+        "name": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  ValueSet",
+        "description": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-admit-Source-cs"
+        },
+        "name": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査) CodeSystem",
+        "description": "入院経路を表すコード (出典：厚労省DPC導入影響評価調査)  CodeSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-medicationusage-uncoded-cs"
+        },
+        "name": "処方用法ダミーコード用法",
+        "description": "処方用法で標準コードが割り当てられない場合に使用するダミーコード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-eCS-medicationcode-nocoded-cs"
+        },
+        "name": "医薬品未標準化コード項目",
+        "description": "医薬品コードで標準コードが割り当てられない場合に使用する未コード化コード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-ecs-medicationcode-nocoded-vs"
+        },
+        "name": "医薬品未標準化コード項目　valueSet",
+        "description": "医薬品コードで標準コードが割り当てられない場合に使用する未コード化コードだけのValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/JP-valueSet-MedicationUsageMHLW-Prscription"
+        },
+        "name": "厚労省電子処方箋用法コードマスターValueSet",
+        "description": "厚労省電子処方箋用法コードマスターValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-valueSet-ePCS-document-section"
+        },
+        "name": "患者療養計画サマリー　セクション区分コード　ValueSet",
+        "description": "患者療養計画サマリー　セクション区分　ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-observation-subcategory-cs"
+        },
+        "name": "感染症関連検査結果として検体検査結果を報告する場合のサブカテゴリで５情報で運用される",
+        "description": "感染症関連検査結果として検体検査結果を報告する場合のサブカテゴリで５情報で運用される",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-obslabresult-uncoded-cs"
+        },
+        "name": "未標準化コード項目(JLAC)",
+        "description": "検体検査結果項目で標準コードが割り当てられない場合に使用する未コード化コード(JLAC10)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-clins-obslabresult-localuncoded-cs"
+        },
+        "name": "未標準化コード項目(Local)",
+        "description": "検体検査結果項目で標準コードが割り当てられない場合に使用する未コード化コード(Local)",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-SpecialCheckup-LaboResult-2102-CS"
+        },
+        "name": "特定検診検査結果　健診定性検査結果コード",
+        "description": "特定検診検査結果　健診定性検査結果コード ",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-SpecialCheckup-LaboResult-2100-CS"
+        },
+        "name": "特定検診検査結果　定性検査結果2100",
+        "description": "特定検診検査結果　定性検査結果　1：陽性，2：陰性",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-SpecialCheckup-LaboResult-2101-CS"
+        },
+        "name": "特定検診検査結果　定性検査結果2101",
+        "description": "特定検診検査結果　定性検査結果　1：陰性，2：陽性",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-ehrshrs-indication-forCondition-vs"
+        },
+        "name": "病名情報のための長期保存／未告知診療情報等のフラグコード　valueSet",
+        "description": "病名情報のための長期保存／未告知診療情報等のフラグコード　valueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CarePlan/Example-JP-CarePlan-eCS-HT"
+        },
+        "name": "療養計画",
+        "description": "CarePlanリソース　データ作成例",
+        "exampleCanonical": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_CarePlan_ePCS"
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-valueSet-eReferral-document-section"
+        },
+        "name": "診療情報提供書セクション区分コード　ValueSet",
+        "description": "診療情報提供書セクション区分　ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-valueSet-eDischargeSummary-document-section"
+        },
+        "name": "退院時サマリーセクション区分コード　ValueSet",
+        "description": "退院時サマリーセクション区分　ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-dischargeDisposition-vs"
+        },
+        "name": "退院時転帰コード情報　(出典：厚労省DPC導入影響評価調査) ValueSet",
+        "description": "退院時転帰コード情報　(出典：厚労省DPC導入影響評価調査) ValueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-dischargeDisposition"
+        },
+        "name": "退院時転帰コード情報（出典：厚労省DPC導入影響評価調査） CodeSystem",
+        "description": "退院時転帰コード情報（出典：厚労省DPC導入影響評価調査）CodeSystem",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-ehrshrs-indication-lts-vs"
+        },
+        "name": "長期保存のためのフラグコード　valueSet",
+        "description": "長期保存のためのフラグコード　valueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-ehrshrs-indication-cs"
+        },
+        "name": "長期保存／未告知診療情報のためのフラグコード",
+        "description": "長期保存／未告知診療情報のためのフラグコード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-ehrshrs-indication-vs"
+        },
+        "name": "長期保存／未告知診療情報のためのフラグコード　valueSet",
+        "description": "長期保存／未告知診療情報のためのフラグコード　valueSet",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "CodeSystem/jp-codeSystem-clins-document-section"
+        },
+        "name": "電子カルテ情報共有サービス文書共通セクション区分コード",
+        "description": "電子カルテ情報共有サービス文書共通セクション区分コード",
+        "exampleBoolean": false
+      },
+      {
+        "reference": {
+          "reference": "ValueSet/jp-clins-bundleresourcetype-vs"
+        },
+        "name": "５情報Bundle５情報リソースタイプ　valueSet",
+        "description": "５情報Bundle５情報リソースタイプ　valueSet",
+        "exampleBoolean": false
+      }
+    ],
+    "page": {
+      "nameUrl": "toc.html",
+      "title": "Table of Contents",
+      "generation": "html",
+      "page": [
+        {
+          "nameUrl": "index.html",
+          "title": "電子カルテ情報共有サービス2文書５情報・患者サマリー　FHIR仕様　JP-CLINS",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "core6spec.html",
+          "title": "５情報送信仕様",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "resourceProfiles.html",
+          "title": "５情報と関連プロファイル",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "referral-doc.html",
+          "title": "診療情報提供書",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "discharge-doc.html",
+          "title": "退院時サマリー",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "ptsummary-doc.html",
+          "title": "患者サマリー(療養計画書)",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "glossary.html",
+          "title": "用語説明",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "validationGuide.html",
+          "title": "Validationガイド",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "history.html",
+          "title": "改訂履歴",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "all-igs.html",
+          "title": "全バージョン一覧",
+          "generation": "markdown"
+        },
+        {
+          "nameUrl": "qanda.html",
+          "title": "Q＆Aよくある質問",
+          "generation": "markdown"
+        }
+      ]
+    },
+    "parameter": [
+      {
+        "code": "copyrightyear",
+        "value": "2023+"
+      },
+      {
+        "code": "releaselabel",
+        "value": "release"
+      },
+      {
+        "code": "path-resource",
+        "value": "input/resources"
+      },
+      {
+        "code": "path-resource",
+        "value": "fsh-generated/resources"
+      },
+      {
+        "code": "path-pages",
+        "value": "input/pagecontent"
+      },
+      {
+        "code": "path-pages",
+        "value": "input/intro-notes"
+      },
+      {
+        "code": "path-pages",
+        "value": "fsh-generated/includes"
+      },
+      {
+        "code": "path-expansion-params",
+        "value": "../../input/_resources/exp-params.json"
+      },
+      {
+        "code": "no-narrative",
+        "value": "CodeSystem/*"
+      },
+      {
+        "code": "active-tables",
+        "value": "false"
+      },
+      {
+        "code": "apply-version",
+        "value": "false"
+      },
+      {
+        "code": "apply-copyright",
+        "value": "true"
+      },
+      {
+        "code": "apply-publisher",
+        "value": "true"
+      },
+      {
+        "code": "apply-contact",
+        "value": "true"
+      },
+      {
+        "code": "apply-license",
+        "value": "true"
+      },
+      {
+        "code": "apply-jurisdiction",
+        "value": "true"
+      },
+      {
+        "code": "show-inherited-invariants",
+        "value": "true"
+      },
+      {
+        "code": "usage-stats-opt-out",
+        "value": "true"
+      },
+      {
+        "code": "display-warnings",
+        "value": "true"
+      },
+      {
+        "code": "excludexml",
+        "value": "true"
+      },
+      {
+        "code": "excludejson",
+        "value": "false"
+      },
+      {
+        "code": "excludettl",
+        "value": "true"
+      },
+      {
+        "code": "excludemap",
+        "value": "true"
+      },
+      {
+        "code": "noRootToc",
+        "value": "true"
+      },
+      {
+        "code": "generate",
+        "value": "json"
+      },
+      {
+        "code": "no-validate",
+        "value": "*/hl7.fhir.jp.core"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_AllergyIntolerance_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Binary"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_CLINS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_eDischargeSummary"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_ePCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/StructureDefinition/JP_Bundle_eReferral"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/StructureDefinition/JP_Bundle"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_CarePlan_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_CarePlan_ePCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eDischargeSummary/StructureDefinition/JP_Composition_eDischargeSummary"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePCS/StructureDefinition/JP_Composition_ePCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eReferral/StructureDefinition/JP_Composition_eReferral"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Condition_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Consent_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Consent"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePrescription/StructureDefinition/JP_Coverage_eCS_insurance"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePrescription/StructureDefinition/JP_Coverage_eCS_publicPayment"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Device_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Device"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_DeviceUseStatement_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_DeviceUseStatement"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_DocumentReference_CDAdocument"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_DocumentReference_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Encounter_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_FamilyMemberHistory_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Immunization_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_MedicationRequest_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_Common_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Observation_LabResult_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePrescription/StructureDefinition/JP_Organization_eCS_coveragePayer"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS_department"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Organization_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Patient_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Practitioner_eCS_author"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_PractitionerRole_eCS_author"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_Procedure_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_RelatedPerson_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_RelatedPerson"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_ResearchStudy_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_ResearchStudy"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/StructureDefinition/JP_ResearchSubject_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_ResearchSubject"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_ServiceRequest"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationDosage_eCS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/StructureDefinition/JP_ServiceRequest_Common"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Condition_DiseasePostfixModifier"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Condition_DiseasePrefixModifier"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/Extension/StructureDefinition/JP_eCS_Department"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/Extension/StructureDefinition/JP_eCS_DiagnosisType"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/Extension/StructureDefinition/JP_eCS_InstitutionNumber"
+      },
+      {
+        "code": "special-url",
+        "value": "urn:oid:1.2.392.200119.6.2100"
+      },
+      {
+        "code": "special-url",
+        "value": "urn:oid:1.2.392.200119.6.2101"
+      },
+      {
+        "code": "special-url",
+        "value": "urn:oid:1.2.392.200119.6.2102"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/CodeSystem/admit-Source"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/CarePlan/CodeSystem/category"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/BundleResourceType_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_BldABO_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_BldRh_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_PosNegHold_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_Urine_Code_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_CLINS_MedicationUsage_Uncoded_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ObservationLabResultLocalUncoded_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_CLINS_ObsLabResult_Uncoded_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/document-section"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/CodeSystem/discharge-disposition"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/CodeSystem/doc-subtypecodes"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/CodeSystem/doc-typecodes"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePrescription/CodeSystem/prescription-section"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/CodeSystem/practitioner-certificate-category"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePrescription/CodeSystem/prescription-category"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/CodeSystem/MedicationCodeNocoded_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_ehrshrs_indication"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/core/terminology/CodeSystemJPDisplay/ex-diagnosistype"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/CodeSystem/observation-subcategory-cs"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_SimpleObservationCategory_CS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/core/terminology/CodeSystemJPDisplay/v3-ActCode"
+      },
+      {
+        "code": "special-url",
+        "value": "http://medis.or.jp/ValueSet/master-disease-keyNumber"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/core/mhlw/ValueSet/MedicationUsage_ePrescription"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/CarePlan/ValueSet/category"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/ValueSet/admit-Source"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/BundleResourceType_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_abo_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_alb_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_alp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_alt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_amy_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_aptt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ast_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_bg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_bnp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_bun_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ca_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_cbg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_che_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ck_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_cl_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_cre_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_crp_class_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_crp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ctg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_cys_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_d_bil_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_dd_class_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_dd_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_fbg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ftg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ggt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_hb_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_hba1c_ngsp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_hdl_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_plt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_k_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ldl_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_na_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_nt_probnp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_pt_act_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_pt_inr_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_pt_ratio_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_pt_sec_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_rbc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_rh_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_t_bil_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_t_cho_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_tg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_tp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_ac_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_bld_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_glu_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_glu_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_u_pc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_ua_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_utp_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_utp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_CoreLabo_wbc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_abo_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_alb_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_alp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_alt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_amy_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_aptt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ast_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_bg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_bnp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_bun_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ca_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_cbg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_che_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ck_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_cl_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_cre_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_crp_class_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_crp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ctg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_cys_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_d_bil_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_dd_class_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_dd_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_fbg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ftg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ggt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_hb_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_hba1c_ngsp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_hdl_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_plt_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_k_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ldl_c_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_na_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_nt_probnp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_pt_act_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_pt_inr_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_pt_ratio_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_pt_sec_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_rbc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_rh_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_t_bil_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_t_cho_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_tg_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_tp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_ac_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_bld_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_bld_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_glu_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_glu_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_u_pc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_ua_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_utp_HalfQty_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_utp_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_wbc_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24POSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24RESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsABQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HbsAGOD_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVABCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVABPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVAGQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVAGRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVNQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HCVNRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABOD_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24COI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24QUANTs_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1QUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV1RESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV2ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_HIV2ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_STSQLRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_STSQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_TPHQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_TPPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_TPQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_TPRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC10/JP_CLINS_ObsLabResult_InfectionLabo_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24POSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24RESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsABQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HbsAGOD_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HBsAGRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVABCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVABPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVAGQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVAGRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVNQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HCVNRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABOD_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24COI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24QUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1QUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1RESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV2ABDIL_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV2ABRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_STSQLRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_STSQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_TPHQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_TPPOSCOI_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_TPQUANT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_TPRESULT_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/ValueSet/discharge-disposition"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/CodeSystem/MedicationCodeNocoded_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/ValueSet/JP_eCS_ObservationLabResultCode_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ehrshrs_forCondition_indication"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ehrshrs_lts_indication"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JP_ehrshrs_indication"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/ValueSet/doc-subtypecodes"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/Common/ValueSet/doc-typecodes"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eDischargeSummary/ValueSet/document-section"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/ePCS/ValueSet/document-section"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eReferral/ValueSet/document-section"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_CoreLabo_VS"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/CodeSystem/laboItem_property"
+      },
+      {
+        "code": "special-url",
+        "value": "http://jpfhir.jp/fhir/eCS/CodeSystem/laboItem_unit_property"
+      }
+    ]
+  }
+}

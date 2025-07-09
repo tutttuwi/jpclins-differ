@@ -1,0 +1,32 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_CLINS_ValueSet_InfectionLaboJLAC11_HIV1P2ABP24RESULT_VS",
+  "id": "jp-clins-valueset-infectionlaboJLAC11-HIV1P2ABP24RESULT-vs",
+  "title": "CLINS 電子カルテ共有サービス用:感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定性)",
+  "description": "CLINS 電子カルテ共有サービス用 感染症検査項目セットJLAC11 HIV-1+2抗体・p24抗原(定性)",
+  "url": "http://jpfhir.jp/fhir/clins/ValueSet/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_HIV1P2ABP24RESULT_VS",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2022-10-11T21:17:22.426+09:00"
+  },
+  "version": "1.1.0a",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/JLAC11/JP_CLINS_ObsLabResult_InfectionLabo_CS",
+        "filter": [
+          {
+            "property": "concept",
+            "op": "descendent-of",
+            "value": "HIV-1P2-AB-P24-RESULT"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_valueSet_eDischargeSummary_document_section",
+  "id": "jp-valueSet-eDischargeSummary-document-section",
+  "description": "退院時サマリーセクション区分　ValueSet",
+  "url": "http://jpfhir.jp/fhir/eDischargeSummary/ValueSet/document-section",
+  "title": "退院時サマリーセクション区分コード　ValueSet",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/document-section",
+        "filter": [
+          {
+            "property": "concept",
+            "op": "descendent-of",
+            "value": "REF"
+          }
+        ]
+      },
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/document-section",
+        "filter": [
+          {
+            "property": "concept",
+            "op": "descendent-of",
+            "value": "COMMON"
+          }
+        ]
+      }
+    ]
+  }
+}

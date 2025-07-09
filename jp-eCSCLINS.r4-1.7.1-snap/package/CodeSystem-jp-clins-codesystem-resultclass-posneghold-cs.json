@@ -1,0 +1,36 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_CodeSystem_ResultClass_PosNegHold_CS",
+  "id": "jp-clins-codesystem-resultclass-posneghold-cs",
+  "title": "JP_CLINS 判定定性検査結果コード表 1：陽性、2：陰性",
+  "description": "JP_CLINS 判定定性検査結果　1:陽性、2:陰性、3:判定保留 コードは半角、コード表示名は全角文字",
+  "url": "http://jpfhir.jp/fhir/LaboResult/CodeSystem/JP_PosNegHold_CS",
+  "concept": [
+    {
+      "code": "1",
+      "display": "陽性"
+    },
+    {
+      "code": "2",
+      "display": "陰性"
+    },
+    {
+      "code": "3",
+      "display": "判定保留"
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "caseSensitive": false,
+  "date": "2024-12-16T00:00:00+09:00",
+  "contact": [
+    {
+      "name": "Kazuhiko Ohe, The Univerisity of Tokyo"
+    }
+  ],
+  "count": 3
+}

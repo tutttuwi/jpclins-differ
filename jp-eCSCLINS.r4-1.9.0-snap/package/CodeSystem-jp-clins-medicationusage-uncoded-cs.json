@@ -1,0 +1,20 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_MedicationUsage_Uncoded_CS",
+  "id": "jp-clins-medicationusage-uncoded-cs",
+  "title": "処方用法ダミーコード用法",
+  "description": "処方用法で標準コードが割り当てられない場合に使用するダミーコード",
+  "url": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_CLINS_MedicationUsage_Uncoded_CS",
+  "concept": [
+    {
+      "code": "0X0XXXXXXXXX0000",
+      "display": "ダミー用法コード"
+    }
+  ],
+  "version": "1.4.0",
+  "experimental": false,
+  "caseSensitive": false,
+  "count": 1
+}

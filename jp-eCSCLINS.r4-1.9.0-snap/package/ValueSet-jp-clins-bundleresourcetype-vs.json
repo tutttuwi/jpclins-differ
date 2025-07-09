@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_CLINS_BundleResourceType_VS",
+  "id": "jp-clins-bundleresourcetype-vs",
+  "title": "５情報Bundle５情報リソースタイプ　valueSet",
+  "description": "５情報Bundle５情報リソースタイプ　valueSet",
+  "url": "http://jpfhir.jp/fhir/clins/ValueSet/BundleResourceType_VS",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-02-25",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/clins/CodeSystem/BundleResourceType_CS"
+      }
+    ]
+  }
+}

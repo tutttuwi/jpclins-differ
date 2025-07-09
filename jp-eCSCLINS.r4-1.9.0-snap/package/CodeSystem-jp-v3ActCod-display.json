@@ -1,0 +1,98 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "supplement",
+  "name": "JP_v3ActCode_display",
+  "id": "jp-v3ActCod-display",
+  "title": "http://terminology.hl7.org/CodeSystem/v3-ActCodeに日本語displayを追加",
+  "description": "http://terminology.hl7.org/CodeSystem/v3-ActCodeに日本語displayを追加",
+  "url": "http://jpfhir.jp/core/terminology/CodeSystemJPDisplay/v3-ActCode",
+  "version": "1.4.0",
+  "experimental": false,
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "supplements": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+  "concept": [
+    {
+      "code": "AMB",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "外来"
+        }
+      ]
+    },
+    {
+      "code": "EMER",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "救急"
+        }
+      ]
+    },
+    {
+      "code": "FLD",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "現地"
+        }
+      ]
+    },
+    {
+      "code": "HH",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "在宅"
+        }
+      ]
+    },
+    {
+      "code": "IMP",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "入院"
+        }
+      ]
+    },
+    {
+      "code": "OBSENC",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "検査受診"
+        }
+      ]
+    },
+    {
+      "code": "PRENC",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "入院前受診"
+        }
+      ]
+    },
+    {
+      "code": "SS",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "ショートステイ"
+        }
+      ]
+    },
+    {
+      "code": "VR",
+      "designation": [
+        {
+          "language": "ja",
+          "value": "遠隔受診"
+        }
+      ]
+    }
+  ]
+}

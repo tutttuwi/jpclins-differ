@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_valueSet_Disease_MEDIS_ManagementID",
+  "id": "JP-valueSet-Disease-MEDIS-ManagementID",
+  "title": "MEDIS標準病名マスター病名管理番号ValueSet",
+  "description": "MEDIS標準病名マスター病名管理番号ValueSet",
+  "url": "http://medis.or.jp/ValueSet/master-disease-keyNumber",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-09-07",
+  "publisher": "（財）医療情報システム開発センター",
+  "copyright": "（財）医療情報システム開発センター",
+  "compose": {
+    "include": [
+      {
+        "system": "http://medis.or.jp/CodeSystem/master-disease-keyNumber"
+      }
+    ]
+  }
+}

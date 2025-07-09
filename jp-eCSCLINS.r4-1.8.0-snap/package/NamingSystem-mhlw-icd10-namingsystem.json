@@ -1,0 +1,20 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "mhlw-icd10-namingsystem",
+  "name": "MHLW_ICD10FullDigits_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core for MHLW ICD10-2013 full digits NamingSystem",
+  "uniqueId": [
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/mhlw/CodeSystem/ICD10-2013-full",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://www.mhlw.go.jp/toukei/sippei/2013/ICD10-JP"
+    }
+  ]
+}

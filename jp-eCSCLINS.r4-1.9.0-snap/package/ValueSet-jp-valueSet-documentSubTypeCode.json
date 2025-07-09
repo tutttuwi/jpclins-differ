@@ -1,0 +1,21 @@
+{
+  "resourceType": "ValueSet",
+  "status": "active",
+  "name": "JP_valueSet_documentSubTypeCode",
+  "id": "jp-valueSet-documentSubTypeCode",
+  "title": "FHIR文書の文書サブ区分（医療文書）",
+  "description": "FHIR文書の文書サブ区分（医療文書全般）",
+  "url": "http://jpfhir.jp/fhir/Common/ValueSet/doc-subtypecodes",
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-07-10",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "compose": {
+    "include": [
+      {
+        "system": "http://jpfhir.jp/fhir/Common/CodeSystem/doc-subtypecodes"
+      }
+    ]
+  }
+}

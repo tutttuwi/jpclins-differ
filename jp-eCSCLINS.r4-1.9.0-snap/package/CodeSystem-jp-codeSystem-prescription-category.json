@@ -1,0 +1,31 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_codeSystem_prescription_category",
+  "id": "jp-codeSystem-prescription-category",
+  "title": "JP codeSystem prescription category",
+  "description": "処方箋区分コード　（01:一般処方箋、02:麻薬処方箋、03:分割一般処方）",
+  "url": "http://jpfhir.jp/fhir/ePrescription/CodeSystem/prescription-category",
+  "concept": [
+    {
+      "code": "01",
+      "display": "一般処方箋"
+    },
+    {
+      "code": "02",
+      "display": "麻薬処方箋"
+    },
+    {
+      "code": "03",
+      "display": "分割一般処方"
+    }
+  ],
+  "version": "1.4.0",
+  "caseSensitive": true,
+  "experimental": false,
+  "date": "2023-04-01T00:00:00+09:00",
+  "publisher": "（一社）日本医療情報学会",
+  "copyright": "（一社）日本医療情報学会. CC BY-ND 4.0",
+  "count": 3
+}

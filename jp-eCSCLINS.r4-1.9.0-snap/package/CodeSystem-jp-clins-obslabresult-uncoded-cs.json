@@ -1,0 +1,20 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_CLINS_ObsLabResult_Uncoded_CS",
+  "id": "jp-clins-obslabresult-uncoded-cs",
+  "title": "未標準化コード項目(JLAC)",
+  "description": "検体検査結果項目で標準コードが割り当てられない場合に使用する未コード化コード(JLAC10)",
+  "url": "http://jpfhir.jp/fhir/clins/CodeSystem/JP_CLINS_ObsLabResult_Uncoded_CS",
+  "concept": [
+    {
+      "code": "99999999999999999",
+      "display": "未標準化コード項目(JLAC)"
+    }
+  ],
+  "version": "1.4.0",
+  "experimental": false,
+  "caseSensitive": false,
+  "count": 1
+}

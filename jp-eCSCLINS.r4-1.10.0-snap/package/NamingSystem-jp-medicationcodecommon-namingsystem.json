@@ -1,0 +1,24 @@
+{
+  "resourceType": "NamingSystem",
+  "id": "jp-medicationcodecommon-namingsystem",
+  "name": "JP_MedicationCodeCommon_NamingSystem",
+  "status": "active",
+  "date": "2023-06-26",
+  "kind": "codesystem",
+  "description": "JP Core MedicationCode Common NamingSystem",
+  "uniqueId": [
+    {
+      "type": "oid",
+      "value": "1.2.392.100495.20.1.81"
+    },
+    {
+      "type": "uri",
+      "value": "urn:oid:1.2.392.100495.20.1.81",
+      "preferred": true
+    },
+    {
+      "type": "uri",
+      "value": "http://jpfhir.jp/fhir/core/CodeSystem/JP_MedicationCodeCommon_CS"
+    }
+  ]
+}

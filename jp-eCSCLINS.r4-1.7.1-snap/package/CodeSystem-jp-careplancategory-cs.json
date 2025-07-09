@@ -1,0 +1,33 @@
+{
+  "resourceType": "CodeSystem",
+  "status": "active",
+  "content": "complete",
+  "name": "JP_carePlanCategory_CS",
+  "id": "jp-careplancategory-cs",
+  "title": "ケアプランのタイプコード",
+  "description": "ケアプランのタイプコード",
+  "url": "http://jpfhir.jp/fhir/CarePlan/CodeSystem/category",
+  "concept": [
+    {
+      "code": "admission-plan",
+      "display": "入院時プラン"
+    },
+    {
+      "code": "hospital-plan",
+      "display": "入院中プラン"
+    },
+    {
+      "code": "discharge-plan",
+      "display": "退院時プラン"
+    },
+    {
+      "code": "followup-plan",
+      "display": "外来診療経過中プラン"
+    }
+  ],
+  "version": "1.0.0",
+  "experimental": false,
+  "date": "2024-01-31",
+  "caseSensitive": true,
+  "count": 4
+}

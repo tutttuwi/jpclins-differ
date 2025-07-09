@@ -187,7 +187,7 @@ class StructureDefinitionElementComparator:
         except Exception:
             return '<div>スクリプトソース取得不可</div>'
 
-    def generate_html_report(self, output_file="structure_definition_elements_diff.html"):
+    def generate_html_report(self, output_file="public/structure_definition_elements_diff.html"):
         """HTMLレポートを生成"""
         # 統計情報を計算
         # StructureDefinition以外も含めて全JSONファイルを対象にする
